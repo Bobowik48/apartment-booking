@@ -21,7 +21,9 @@ See [docs/architecture.md](docs/architecture.md) for details.
 
 1. Copy `.env.example` to `.env` and adjust values if needed.
 2. Run:
-docker compose up --build
+```
+    docker compose up --build
+```
 3. Services:
    - Frontend: http://localhost:4200
    - Backend API: http://localhost:8080
