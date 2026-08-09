@@ -1,7 +1,7 @@
 package com.hubert.apartmentbooking.model.enums;
 
 public enum ReservationStatus {
-    PENDING,
+    PENDING_PAYMENT,
     CONFIRMED,
     CANCELLED,
     COMPLETED

@@ -60,7 +60,7 @@ public class ReservationService {
         reservation.setGuestName(request.guestName());
         reservation.setGuestEmail(request.guestEmail());
         reservation.setGuestPhone(request.guestPhone());
-        reservation.setStatus(ReservationStatus.PENDING);
+        reservation.setStatus(ReservationStatus.PENDING_PAYMENT);
         reservation.setAccessToken(UUID.randomUUID().toString());
         reservation.setCreatedAt(LocalDateTime.now());
 
