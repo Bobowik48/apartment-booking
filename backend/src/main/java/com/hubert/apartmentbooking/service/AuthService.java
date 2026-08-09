@@ -19,10 +19,13 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public AuthResponse register(RegisterRequest request) {
@@ -37,8 +40,9 @@ public class AuthService {
         user.setCreatedAt(LocalDateTime.now());
 
         User saved = userRepository.save(user);
+        String token = jwtService.generateToken(saved.getEmail(), saved.getRole().name());
 
-        return new AuthResponse(saved.getId(), saved.getEmail(), saved.getRole());
+        return new AuthResponse(saved.getId(), saved.getEmail(), saved.getRole(), token);
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -48,7 +52,8 @@ public class AuthService {
         if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
             throw new InvalidCredentialsException(Constants.INVALID_CREDENTIALS);
         }
+        String token = jwtService.generateToken(user.getEmail(), user.getRole().name());
 
-        return new AuthResponse(user.getId(), user.getEmail(), user.getRole());
+        return new AuthResponse(user.getId(), user.getEmail(), user.getRole(), token);
     }
 }
