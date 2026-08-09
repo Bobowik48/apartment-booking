@@ -1,5 +1,6 @@
 package com.hubert.apartmentbooking.model;
 
+import com.hubert.apartmentbooking.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

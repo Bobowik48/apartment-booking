@@ -1,4 +1,4 @@
-package com.hubert.apartmentbooking.model;
+package com.hubert.apartmentbooking.model.enums;
 
 public enum ReservationStatus {
     PENDING,

@@ -1,5 +1,6 @@
 package com.hubert.apartmentbooking.model;
 
+import com.hubert.apartmentbooking.model.enums.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,14 +27,25 @@ public class Reservation {
     @JoinColumn(name = "apartment_id")
     private Apartment apartment;
 
+    private String guestName;
+
+    private String guestEmail;
+
+    private String guestPhone;
+
     private LocalDate checkInDate;
 
     private LocalDate checkOutDate;
 
+    private Integer guestsCount;
+
+    private BigDecimal totalPrice;
+
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    private BigDecimal totalPrice;
+    @Column(unique = true)
+    private String accessToken;
 
     private LocalDateTime createdAt;
 }

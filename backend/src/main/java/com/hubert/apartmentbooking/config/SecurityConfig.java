@@ -1,5 +1,6 @@
 package com.hubert.apartmentbooking.config;
 
+import com.hubert.apartmentbooking.constants.Constants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,7 +14,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/availability").permitAll()
+                        .requestMatchers(Constants.AVAILABILITY_PATH, Constants.RESERVATIONS_PATH, Constants.RESERVATIONS_PATH + "/**").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();

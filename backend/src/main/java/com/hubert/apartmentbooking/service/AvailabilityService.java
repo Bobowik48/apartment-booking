@@ -2,6 +2,7 @@ package com.hubert.apartmentbooking.service;
 
 import com.hubert.apartmentbooking.model.BlockedDate;
 import com.hubert.apartmentbooking.model.Reservation;
+import com.hubert.apartmentbooking.model.enums.ReservationStatus;
 import com.hubert.apartmentbooking.repository.BlockedDateRepository;
 import com.hubert.apartmentbooking.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
@@ -22,10 +23,10 @@ public class AvailabilityService {
     }
 
     public List<LocalDate> getUnavailableDates(Long apartmentId, LocalDate from, LocalDate to) {
-        List<Reservation> reservations = reservationRepository.findOverlapping(apartmentId, from, to);
-
 
         List<BlockedDate> blockedDates = blockedDateRepository.findOverlapping(apartmentId, from, to);
+
+        List<Reservation> reservations = reservationRepository.findOverlapping(apartmentId, from, to, ReservationStatus.CANCELLED);
 
         TreeSet<LocalDate> unavailableDates = new TreeSet<>();
 

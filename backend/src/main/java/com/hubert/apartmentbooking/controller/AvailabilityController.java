@@ -1,6 +1,7 @@
 package com.hubert.apartmentbooking.controller;
 
-import com.hubert.apartmentbooking.dto.AvailabilityResponse;
+import com.hubert.apartmentbooking.constants.Constants;
+import com.hubert.apartmentbooking.dto.response.AvailabilityResponse;
 import com.hubert.apartmentbooking.service.AvailabilityService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/availability")
+@RequestMapping(Constants.AVAILABILITY_PATH)
 public class AvailabilityController {
 
     private final AvailabilityService availabilityService;
