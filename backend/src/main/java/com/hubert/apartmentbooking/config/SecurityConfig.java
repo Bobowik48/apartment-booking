@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(Constants.AVAILABILITY_PATH, Constants.RESERVATIONS_PATH, Constants.RESERVATIONS_PATH + "/**", Constants.AUTH_PATH + "/**", "/error").permitAll()
+                        .requestMatchers(Constants.AVAILABILITY_PATH, Constants.RESERVATIONS_PATH, Constants.RESERVATIONS_PATH + "/**", Constants.AUTH_PATH + "/**", Constants.APARTMENTS_PATH + "/**", "/error").permitAll()
                         .requestMatchers(Constants.ADMIN_PATH + "/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

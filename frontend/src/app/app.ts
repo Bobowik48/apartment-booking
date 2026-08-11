@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ApartmentService } from './core/services/apartment.service';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +9,12 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('frontend');
+  private apartmentService = inject(ApartmentService);
+
+  constructor() {
+    this.apartmentService.getApartment(1).subscribe({
+      next: apartment => console.log('OK:', apartment),
+      error: err => console.error('BŁĄD:', err)
+    });
+  }
 }

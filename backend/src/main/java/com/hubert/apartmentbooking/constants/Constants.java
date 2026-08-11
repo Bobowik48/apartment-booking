@@ -12,6 +12,7 @@ public final class Constants {
     public static final String REGISTER_ENDPOINT = "/register";
     public static final String LOGIN_ENDPOINT = "/login";
     public static final String ADMIN_PATH = "/api/admin";
+    public static final String APARTMENTS_PATH = "/api/apartments";
 
     // Error codes
     public static final String APARTMENT_NOT_FOUND = "APARTMENT_NOT_FOUND";
