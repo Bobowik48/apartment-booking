@@ -45,6 +45,10 @@ public class ReservationService {
                 .orElseThrow(() -> new ApartmentNotFoundException(
                         String.format(Constants.APARTMENT_NOT_FOUND, request.apartmentId())));
 
+        if (!request.checkOutDate().isAfter(request.checkInDate())) {
+            throw new DatesNotAvailableException(Constants.CHECK_OUT_BEFORE_CHECK_IN);
+        }
+
         List<LocalDate> unavailableDates = availabilityService.getUnavailableDates(
                 request.apartmentId(), request.checkInDate(), request.checkOutDate());
 
@@ -69,7 +73,7 @@ public class ReservationService {
 
         if (request.userId() != null) {
             User user = userRepository.findById(request.userId())
-                    .orElseThrow(() -> new NoSuchElementException("User not found: " + request.userId()));
+                    .orElseThrow(() -> new NoSuchElementException(Constants.USER_NOT_FOUND));
             reservation.setUser(user);
         }
 
@@ -81,7 +85,7 @@ public class ReservationService {
 
     public ReservationResponse getByAccessToken(String accessToken) {
         Reservation reservation = reservationRepository.findByAccessToken(accessToken)
-                .orElseThrow(() -> new NoSuchElementException("Reservation not found"));
+                .orElseThrow(() -> new NoSuchElementException(Constants.RESERVATION_NOT_FOUND));
 
         return new ReservationResponse(reservation.getId(), reservation.getCheckInDate(), reservation.getCheckOutDate(),
                 reservation.getGuestsCount(), reservation.getTotalPrice(), reservation.getStatus(), reservation.getAccessToken());

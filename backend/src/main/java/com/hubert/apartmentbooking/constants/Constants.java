@@ -13,11 +13,17 @@ public final class Constants {
     public static final String LOGIN_ENDPOINT = "/login";
     public static final String ADMIN_PATH = "/api/admin";
 
-    // Error messages
-    public static final String APARTMENT_NOT_FOUND = "Apartment not found: %s";
-    public static final String DATES_NOT_AVAILABLE = "Selected dates are not available";
-    public static final String EMAIL_ALREADY_IN_USE = "Email already in use: %s";
-    public static final String INVALID_CREDENTIALS = "Invalid email or password";
-    public static final String INVALID_EMAIL_FORMAT = "Invalid email format";
-    public static final String WEAK_PASSWORD = "Password must be at least 6 characters long and contain an uppercase letter, a lowercase letter, and a special character";
+    // Error codes
+    public static final String APARTMENT_NOT_FOUND = "APARTMENT_NOT_FOUND";
+    public static final String DATES_NOT_AVAILABLE = "DATES_NOT_AVAILABLE";
+    public static final String EMAIL_ALREADY_IN_USE = "EMAIL_ALREADY_IN_USE";
+    public static final String INVALID_CREDENTIALS = "INVALID_CREDENTIALS";
+    public static final String INVALID_EMAIL_FORMAT = "INVALID_EMAIL_FORMAT";
+    public static final String WEAK_PASSWORD = "WEAK_PASSWORD";
+    public static final String CHECK_OUT_BEFORE_CHECK_IN = "CHECK_OUT_BEFORE_CHECK_IN";
+    public static final String REQUIRED_FIELD_MISSING = "REQUIRED_FIELD_MISSING";
+    public static final String GUESTS_COUNT_EXCEEDS_MAX = "GUESTS_COUNT_EXCEEDS_MAX";
+    public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
+    public static final String RESERVATION_NOT_FOUND = "RESERVATION_NOT_FOUND";
+    public static final String VALIDATION_FAILED = "VALIDATION_FAILED";
 }

@@ -27,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping(Constants.LOGIN_ENDPOINT)
-    public AuthResponse login(@RequestBody LoginRequest request) {
+    public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
     }
 }

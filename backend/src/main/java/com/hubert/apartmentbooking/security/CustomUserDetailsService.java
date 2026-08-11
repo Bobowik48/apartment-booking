@@ -1,5 +1,6 @@
 package com.hubert.apartmentbooking.security;
 
+import com.hubert.apartmentbooking.constants.Constants;
 import com.hubert.apartmentbooking.model.User;
 import com.hubert.apartmentbooking.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+                .orElseThrow(() -> new UsernameNotFoundException(Constants.USER_NOT_FOUND));
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())

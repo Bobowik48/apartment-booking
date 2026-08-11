@@ -4,6 +4,7 @@ import com.hubert.apartmentbooking.constants.Constants;
 import com.hubert.apartmentbooking.dto.request.CreateReservationRequest;
 import com.hubert.apartmentbooking.dto.response.ReservationResponse;
 import com.hubert.apartmentbooking.service.ReservationService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +18,7 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ReservationResponse createReservation(@RequestBody CreateReservationRequest request) {
+    public ReservationResponse createReservation(@Valid @RequestBody CreateReservationRequest request) {
         return reservationService.createReservation(request);
     }
 
