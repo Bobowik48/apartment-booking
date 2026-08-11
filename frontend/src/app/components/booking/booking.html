@@ -1,1 +1,49 @@
-<p>booking works!</p>
+@if (isAvailabilityLoaded()) {
+<mat-calendar [minDate]="today" [maxDate]="maxDate" [dateFilter]="dateFilterFn"
+    (selectedChange)="onDateSelected($event)">
+</mat-calendar>
+} @else {
+<p>Ładowanie kalendarza...</p>
+}
+
+@if (selectedCheckIn()) {
+<p>Check-in: {{ selectedCheckIn() | date }}</p>
+}
+@if (selectedCheckOut()) {
+<p>Check-out: {{ selectedCheckOut() | date }}</p>
+}
+
+@if (apartment(); as apt) {
+<p>{{ apt.name }} — {{ apt.pricePerNight }} zł / noc</p>
+}
+
+<div>
+    <button (click)="decrementGuests()">-</button>
+    <span>{{ guestsCount() }}</span>
+    <button (click)="incrementGuests()">+</button>
+</div>
+
+@if (nights() > 0) {
+<p>{{ nights() }} nocy × {{ apartment()?.pricePerNight }} zł = {{ totalPrice() }} zł</p>
+}
+
+<div>
+    <label>
+        Imię i nazwisko
+        <input type="text" [value]="guestName()" (input)="updateGuestName($any($event.target).value)" />
+    </label>
+
+    <label>
+        Email
+        <input type="email" [value]="guestEmail()" (input)="updateGuestEmail($any($event.target).value)" />
+    </label>
+
+    <label>
+        Telefon
+        <input type="tel" [value]="guestPhone()" (input)="updateGuestPhone($any($event.target).value)" />
+    </label>
+</div>
+
+<button [disabled]="!canSubmit()" (click)="submitReservation()">
+    {{ isSubmitting() ? 'Wysyłanie...' : 'Rezerwuj' }}
+</button>

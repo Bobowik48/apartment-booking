@@ -1,1 +1,22 @@
-<p>reservation-details works!</p>
+@if (isLoading()) {
+<p>Ładowanie rezerwacji...</p>
+} @else if (notFound()) {
+<p>Nie znaleziono rezerwacji.</p>
+} @else if (reservation(); as res) {
+<div>
+    <h2>Rezerwacja #{{ res.id }}</h2>
+    <p>Status: {{ res.status }}</p>
+    <p>Check-in: {{ res.checkInDate | date }}</p>
+    <p>Check-out: {{ res.checkOutDate | date }}</p>
+    <p>Liczba gości: {{ res.guestsCount ?? 'nie podano' }}</p>
+    <p>Suma: {{ res.totalPrice }} zł</p>
+
+    <p>
+        Link do tej rezerwacji (zapisz sobie, przyda się do sprawdzenia statusu):
+        <br />
+        <a [href]="accessLink">{{ accessLink }}</a>
+    </p>
+
+    <!-- TODO: information about email sended -->
+</div>
+}
