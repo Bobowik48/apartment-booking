@@ -1,23 +1,27 @@
-import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, inject, signal, computed, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { DatePipe, UpperCasePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCalendar, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AvailabilityService } from '../../core/services/availability.service';
 import { ApartmentService } from '../../core/services/apartment.service';
 import { Apartment } from '../../core/models/apartment.model';
-import { DEFAULT_APARTMENT_ID } from '../../core/constants/constants';
+import { DEFAULT_APARTMENT_ID, UI_TEXT } from '../../core/constants/constants';
 import { ReservationService } from '../../core/services/reservation.service';
+import { ErrorTranslationService } from '../../core/services/error-translation.service';
 
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [MatDatepickerModule, MatNativeDateModule, DatePipe],
+  imports: [MatDatepickerModule, MatNativeDateModule, DatePipe, UpperCasePipe],
   templateUrl: './booking.html',
   styleUrl: './booking.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Booking implements OnInit {
+  // ### Constants ###
+  readonly text = UI_TEXT.booking;
+
   // ### Dependencies ###
   private availabilityService = inject(AvailabilityService);
   private router = inject(Router);
@@ -25,6 +29,7 @@ export class Booking implements OnInit {
   // ### Services ###
   private apartmentService = inject(ApartmentService);
   private reservationService = inject(ReservationService);
+  private errorTranslationService = inject(ErrorTranslationService);
 
   // ### Constants ###
   readonly today = new Date();
@@ -34,12 +39,15 @@ export class Booking implements OnInit {
   readonly apartment = signal<Apartment | null>(null);
   readonly selectedCheckIn = signal<Date | null>(null);
   readonly selectedCheckOut = signal<Date | null>(null);
+  readonly errorMessage = signal<string | null>(null);
   readonly guestName = signal('');
   readonly guestEmail = signal('');
   readonly guestPhone = signal('');
   readonly isSubmitting = signal(false);
   readonly isAvailabilityLoaded = signal(false);
   readonly guestsCount = signal(1);
+  @ViewChild(MatCalendar) private calendar?: MatCalendar<Date>;
+
   readonly nights = computed(() => {
     const checkIn = this.selectedCheckIn();
     const checkOut = this.selectedCheckOut();
@@ -47,6 +55,17 @@ export class Booking implements OnInit {
     const diffMs = checkOut.getTime() - checkIn.getTime();
     return Math.round(diffMs / (1000 * 60 * 60 * 24));
   });
+
+  readonly nightsLabel = computed(() => {
+    const n = this.nights();
+    if (n === 1) return 'noc';
+    const lastDigit = n % 10;
+    const lastTwoDigits = n % 100;
+    const isTeenException = lastTwoDigits >= 12 && lastTwoDigits <= 14;
+    if (lastDigit >= 2 && lastDigit <= 4 && !isTeenException) return 'noce';
+    return 'nocy';
+  });
+
   readonly canSubmit = computed(() => {
     return this.nights() > 0
       && this.guestName().trim().length > 0
@@ -75,6 +94,26 @@ export class Booking implements OnInit {
     return !this.availabilityService.isDateUnavailable(this.formatDate(date));
   };
 
+  dateClassFn = (date: Date, view: string): string => {
+    if (view !== 'month') return '';
+
+    const checkIn = this.selectedCheckIn();
+    const checkOut = this.selectedCheckOut();
+    if (!checkIn) return '';
+
+    const time = date.getTime();
+
+    if (checkOut) {
+      if (time === checkIn.getTime()) return 'range-start';
+      if (time === checkOut.getTime()) return 'range-end';
+      if (time > checkIn.getTime() && time < checkOut.getTime()) return 'range-middle';
+    } else if (time === checkIn.getTime()) {
+      return 'range-start';
+    }
+
+    return '';
+  };
+
   onDateSelected(date: Date | null): void {
     if (!date) return;
 
@@ -83,15 +122,13 @@ export class Booking implements OnInit {
     if (!checkIn || this.selectedCheckOut()) {
       this.selectedCheckIn.set(date);
       this.selectedCheckOut.set(null);
-      return;
-    }
-
-    if (date <= checkIn) {
+    } else if (date <= checkIn) {
       this.selectedCheckIn.set(date);
-      return;
+    } else {
+      this.selectedCheckOut.set(date);
     }
 
-    this.selectedCheckOut.set(date);
+    this.calendar?.updateTodaysDate();
   }
 
   incrementGuests(): void {
@@ -140,6 +177,8 @@ export class Booking implements OnInit {
       },
       error: (err) => {
         this.isSubmitting.set(false);
+        this.errorMessage.set(this.errorTranslationService.translate(err.error?.errorCode));
+
         if (err.error?.errorCode === 'DATES_NOT_AVAILABLE') {
           this.availabilityService.loadAvailability(
             DEFAULT_APARTMENT_ID,

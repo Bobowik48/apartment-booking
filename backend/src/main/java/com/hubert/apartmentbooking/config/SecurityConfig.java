@@ -4,6 +4,7 @@ import com.hubert.apartmentbooking.constants.Constants;
 import com.hubert.apartmentbooking.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,7 +33,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(Constants.AVAILABILITY_PATH, Constants.RESERVATIONS_PATH, Constants.RESERVATIONS_PATH + "/**", Constants.AUTH_PATH + "/**", Constants.APARTMENTS_PATH + "/**", "/error").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, Constants.APARTMENTS_PATH + "/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, Constants.APARTMENTS_PATH + "/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, Constants.APARTMENTS_PATH + "/**").hasRole("ADMIN")
+                        .requestMatchers(Constants.RESERVATIONS_PATH + Constants.MY_RESERVATIONS_PATH).authenticated()
+                        .requestMatchers(Constants.AVAILABILITY_PATH, Constants.RESERVATIONS_PATH,
+                                Constants.RESERVATIONS_PATH + "/**", Constants.AUTH_PATH + "/**",
+                                Constants.APARTMENTS_PATH + "/**", "/error").permitAll()
                         .requestMatchers(Constants.ADMIN_PATH + "/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

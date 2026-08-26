@@ -13,6 +13,7 @@ public final class Constants {
     public static final String LOGIN_ENDPOINT = "/login";
     public static final String ADMIN_PATH = "/api/admin";
     public static final String APARTMENTS_PATH = "/api/apartments";
+    public static final String MY_RESERVATIONS_PATH = "/my";
 
     // Error codes
     public static final String APARTMENT_NOT_FOUND = "APARTMENT_NOT_FOUND";
@@ -27,4 +28,5 @@ public final class Constants {
     public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
     public static final String RESERVATION_NOT_FOUND = "RESERVATION_NOT_FOUND";
     public static final String VALIDATION_FAILED = "VALIDATION_FAILED";
+    public static final String FILE_TOO_LARGE = "FILE_TOO_LARGE";
 }

@@ -1,3 +1,5 @@
+import { ReservationStatus } from "../models/reservation.model";
+
 export const API_BASE_URL = 'http://localhost:8080';
 
 export const API_ENDPOINTS = {
@@ -11,3 +13,151 @@ export const API_ENDPOINTS = {
 } as const;
 
 export const DEFAULT_APARTMENT_ID = 1;
+
+export const TOKEN_STORAGE_KEY = 'auth_token';
+
+export interface StatusInfo {
+    label: string;
+    badgeClass: string;
+}
+
+export const RESERVATION_STATUS_INFO: Record<ReservationStatus, StatusInfo> = {
+    PENDING_PAYMENT: { label: 'Oczekuje płatności', badgeClass: 'badge--pending' },
+    CONFIRMED: { label: 'Potwierdzona', badgeClass: 'badge--confirmed' },
+    CANCELLED: { label: 'Anulowana', badgeClass: 'badge--cancelled' },
+    COMPLETED: { label: 'Zakończona', badgeClass: 'badge--completed' }
+};
+
+export const UI_TEXT = {
+    navbar: {
+        logo: 'Residenza Aurea',
+        booking: 'Rezerwacja',
+        myReservations: 'Moje rezerwacje',
+        adminPanel: 'Panel admina',
+        login: 'Zaloguj się',
+        register: 'Zarejestruj się',
+        logout: 'Wyloguj',
+    },
+
+    home: {
+        loading: 'Ładowanie...',
+        loadError: 'Nie udało się załadować informacji o apartamencie.',
+        eyebrowPrefix: 'Prywatny wynajem · ',
+        pricePerNight: 'PLN / noc',
+        maxGuestsPrefix: 'Maks. ',
+        maxGuestsSuffix: ' gości',
+        areaSuffix: ' m²',
+        floorSuffix: '. piętro',
+        cta: 'Zarezerwuj teraz',
+    },
+
+    booking: {
+        sectionDates: 'Wybierz daty pobytu',
+        title: 'Rezerwacja',
+        loadingCalendar: 'Ładowanie kalendarza...',
+        legendSelected: 'Wybrana data',
+        legendTaken: 'Zajęte',
+        guestsLabel: 'Liczba gości',
+        maxGuestsPrefix: 'Maks. ',
+        maxGuestsSuffix: ' osoby',
+        summaryTitle: 'Podsumowanie',
+        checkIn: 'Zameldowanie',
+        checkOut: 'Wymeldowanie',
+        guests: 'Goście',
+        total: 'Łącznie',
+        placeholder: 'Wybierz daty, aby zobaczyć cenę',
+        guestCardTitle: 'Dane gościa',
+        nameLabel: 'Imię i nazwisko',
+        namePlaceholder: 'Jan Kowalski',
+        emailLabel: 'Adres e-mail',
+        emailPlaceholder: 'jan@example.com',
+        phoneLabel: 'Numer telefonu',
+        phonePlaceholder: '+48 600 000 000',
+        submitIdle: 'Rezerwuj',
+        submitBusy: 'Wysyłanie...',
+        currency: 'PLN',
+        nightsAt: (price: number, nights: number, label: string) => `${price} PLN × ${nights} ${label}`,
+    },
+
+    auth: {
+        login: {
+            eyebrow: 'Residenza Aurea',
+            title: 'Zaloguj się',
+            subtitle: 'Wróć do swoich rezerwacji.',
+            emailLabel: 'Adres e-mail',
+            emailPlaceholder: 'jan@example.com',
+            passwordLabel: 'Hasło',
+            passwordPlaceholder: '••••••••',
+            submitIdle: 'Zaloguj się',
+            submitBusy: 'Logowanie...',
+            footerText: 'Nie masz konta? ',
+            footerLink: 'Zarejestruj się',
+        },
+        register: {
+            eyebrow: 'Residenza Aurea',
+            title: 'Utwórz konto',
+            subtitle: 'Zarządzaj rezerwacjami w jednym miejscu.',
+            emailLabel: 'Adres e-mail',
+            emailPlaceholder: 'jan@example.com',
+            passwordLabel: 'Hasło',
+            passwordPlaceholder: 'Min. 8 znaków',
+            submitIdle: 'Zarejestruj się',
+            submitBusy: 'Rejestracja...',
+            footerText: 'Masz już konto? ',
+            footerLink: 'Zaloguj się',
+        },
+    },
+
+    reservationDetails: {
+        loading: 'Ładowanie rezerwacji...',
+        notFound: 'Nie znaleziono rezerwacji.',
+        titlePrefix: 'Rezerwacja #',
+        status: 'Status: ',
+        checkIn: 'Check-in: ',
+        checkOut: 'Check-out: ',
+        guestsLabel: 'Liczba gości: ',
+        guestsNotProvided: 'nie podano',
+        totalLabel: 'Suma: ',
+        currency: 'zł',
+        linkIntro: 'Link do tej rezerwacji (zapisz sobie, przyda się do sprawdzenia statusu):',
+    },
+
+    admin: {
+        eyebrow: 'Administracja',
+        title: 'Panel administratora',
+        dataSection: 'Dane apartamentu',
+        nameLabel: 'Nazwa apartamentu',
+        descriptionLabel: 'Opis',
+        streetLabel: 'Ulica',
+        apartmentNumberLabel: 'Nr mieszkania',
+        districtLabel: 'Dzielnica / Osiedle',
+        cityLabel: 'Miasto',
+        areaLabel: 'Metraż (m²)',
+        floorLabel: 'Piętro',
+        priceLabel: 'Cena za noc (PLN)',
+        maxGuestsLabel: 'Maks. goście',
+        saveIdle: 'Zapisz zmiany',
+        saveBusy: 'Zapisywanie...',
+        gallerySection: 'Galeria zdjęć',
+        addPhoto: '+ Dodaj',
+        uploading: 'Wysyłanie...',
+        deletePhoto: 'Usuń',
+        photoCountSuffix: ' zdjęć w galerii',
+    },
+    
+    myReservations: {
+        eyebrow: 'Konto',
+        title: 'Moje rezerwacje',
+        loading: 'Ładowanie...',
+        emptyText: 'Nie masz jeszcze żadnych rezerwacji.',
+        emptyCta: 'Zarezerwuj teraz',
+        checkIn: 'Zameldowanie',
+        checkOut: 'Wymeldowanie',
+        nights: 'Noce',
+        guests: 'Goście',
+        guestsNotProvided: '—',
+        currency: 'PLN',
+        detailsLink: 'Szczegóły →',
+        newReservation: '+ Nowa rezerwacja',
+    },
+} as const;

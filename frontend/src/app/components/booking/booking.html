@@ -1,49 +1,107 @@
-@if (isAvailabilityLoaded()) {
-<mat-calendar [minDate]="today" [maxDate]="maxDate" [dateFilter]="dateFilterFn"
-    (selectedChange)="onDateSelected($event)">
-</mat-calendar>
-} @else {
-<p>Ładowanie kalendarza...</p>
-}
-
-@if (selectedCheckIn()) {
-<p>Check-in: {{ selectedCheckIn() | date }}</p>
-}
-@if (selectedCheckOut()) {
-<p>Check-out: {{ selectedCheckOut() | date }}</p>
-}
-
 @if (apartment(); as apt) {
-<p>{{ apt.name }} — {{ apt.pricePerNight }} zł / noc</p>
-}
+<div class="booking">
+    <p class="booking__eyebrow">{{ apt.name | uppercase }}</p>
+    <h1 class="booking__title">{{ text.title }}</h1>
 
-<div>
-    <button (click)="decrementGuests()">-</button>
-    <span>{{ guestsCount() }}</span>
-    <button (click)="incrementGuests()">+</button>
+    <div class="booking__layout">
+        <section class="booking__calendar-col">
+            <div class="section-header">
+                <h2>{{ text.sectionDates }}</h2>
+            </div>
+
+            <div class="calendar-card">
+                @if (isAvailabilityLoaded()) {
+                <mat-calendar [minDate]="today" [maxDate]="maxDate" [dateFilter]="dateFilterFn"
+                    [dateClass]="dateClassFn" (selectedChange)="onDateSelected($event)">
+                </mat-calendar>
+
+                <div class="calendar-legend">
+                    <span class="legend-item"><span class="legend-dot legend-dot--selected"></span>{{
+                        text.legendSelected }}</span>
+                    <span class="legend-item"><span class="legend-dot legend-dot--taken"></span>{{ text.legendTaken
+                        }}</span>
+                </div>
+                } @else {
+                <p class="calendar-loading">{{ text.loadingCalendar }}</p>
+                }
+
+                <div class="guests-row">
+                    <div>
+                        <p class="guests-row__label">{{ text.guestsLabel }}</p>
+                        <p class="guests-row__hint">{{ text.maxGuestsPrefix }}{{ apt.maxGuests }}{{ text.maxGuestsSuffix
+                            }}</p>
+                    </div>
+
+                    <div class="guests-control">
+                        <button class="guests-control__btn" (click)="decrementGuests()">−</button>
+                        <span class="guests-control__count">{{ guestsCount() }}</span>
+                        <button class="guests-control__btn" (click)="incrementGuests()">+</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <aside class="booking__side-col">
+            <div class="summary-card">
+                <p class="side-eyebrow">{{ text.summaryTitle }}</p>
+
+                <div class="summary-row">
+                    <span>{{ text.checkIn }}</span>
+                    <span>{{ selectedCheckIn() ? (selectedCheckIn() | date: 'd MMMM y') : '—' }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>{{ text.checkOut }}</span>
+                    <span>{{ selectedCheckOut() ? (selectedCheckOut() | date: 'd MMMM y') : '—' }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>{{ text.guests }}</span>
+                    <span>{{ guestsCount() }}</span>
+                </div>
+
+                @if (nights() > 0) {
+                <div class="summary-row summary-row--breakdown">
+                    <span>{{ text.nightsAt(apt.pricePerNight, nights(), nightsLabel()) }}</span>
+                    <span>{{ totalPrice() }} {{ text.currency }}</span>
+                </div>
+                <div class="summary-total">
+                    <span>{{ text.total }}</span>
+                    <span class="summary-total__value">{{ totalPrice() }} {{ text.currency }}</span>
+                </div>
+                } @else {
+                <p class="summary-placeholder">{{ text.placeholder }}</p>
+                }
+            </div>
+
+            <div class="guest-card">
+                <p class="side-eyebrow">{{ text.guestCardTitle }}</p>
+
+                <label class="field">
+                    <span class="field__label">{{ text.nameLabel }}</span>
+                    <input type="text" [placeholder]="text.namePlaceholder" [value]="guestName()"
+                        (input)="updateGuestName($any($event.target).value)" />
+                </label>
+
+                <label class="field">
+                    <span class="field__label">{{ text.emailLabel }}</span>
+                    <input type="email" [placeholder]="text.emailPlaceholder" [value]="guestEmail()"
+                        (input)="updateGuestEmail($any($event.target).value)" />
+                </label>
+
+                <label class="field">
+                    <span class="field__label">{{ text.phoneLabel }}</span>
+                    <input type="tel" [placeholder]="text.phonePlaceholder" [value]="guestPhone()"
+                        (input)="updateGuestPhone($any($event.target).value)" />
+                </label>
+
+                @if (errorMessage(); as error) {
+                <p class="booking__error">{{ error }}</p>
+                }
+
+                <button class="btn guest-card__submit" [disabled]="!canSubmit()" (click)="submitReservation()">
+                    {{ isSubmitting() ? text.submitBusy : text.submitIdle }}
+                </button>
+            </div>
+        </aside>
+    </div>
 </div>
-
-@if (nights() > 0) {
-<p>{{ nights() }} nocy × {{ apartment()?.pricePerNight }} zł = {{ totalPrice() }} zł</p>
 }
-
-<div>
-    <label>
-        Imię i nazwisko
-        <input type="text" [value]="guestName()" (input)="updateGuestName($any($event.target).value)" />
-    </label>
-
-    <label>
-        Email
-        <input type="email" [value]="guestEmail()" (input)="updateGuestEmail($any($event.target).value)" />
-    </label>
-
-    <label>
-        Telefon
-        <input type="tel" [value]="guestPhone()" (input)="updateGuestPhone($any($event.target).value)" />
-    </label>
-</div>
-
-<button [disabled]="!canSubmit()" (click)="submitReservation()">
-    {{ isSubmitting() ? 'Wysyłanie...' : 'Rezerwuj' }}
-</button>

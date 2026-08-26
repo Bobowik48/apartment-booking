@@ -1,1 +1,29 @@
-<p>home works!</p>
+@if (isLoading()) {
+<p class="home__loading">{{ text.loading }}</p>
+} @else if (apartment(); as apt) {
+<section class="hero" [style.backgroundImage]="heroImageUrl() ? 'url(' + heroImageUrl() + ')' : null">
+    <div class="hero__overlay"></div>
+
+    <div class="hero__content">
+        <p class="hero__eyebrow">{{ text.eyebrowPrefix }}{{ apt.city }}</p>
+        <h1 class="hero__title">{{ apt.name }}</h1>
+        <p class="hero__description">{{ apt.description }}</p>
+
+        <div class="hero__meta">
+            <span class="hero__price"><strong>{{ apt.pricePerNight }}</strong> {{ text.pricePerNight }}</span>
+            <span class="hero__divider"></span>
+            <span>{{ text.maxGuestsPrefix }}{{ apt.maxGuests }}{{ text.maxGuestsSuffix }}</span>
+            <span class="hero__divider"></span>
+            <span>{{ apt.area }}{{ text.areaSuffix }}</span>
+            <span class="hero__divider"></span>
+            <span>{{ apt.floor }}{{ text.floorSuffix }}</span>
+        </div>
+
+        <a routerLink="/booking" class="btn hero__cta">{{ text.cta }}</a>
+    </div>
+
+    <p class="hero__address">{{ heroAddress() }}</p>
+</section>
+} @else {
+<p class="home__loading">{{ text.loadError }}</p>
+}

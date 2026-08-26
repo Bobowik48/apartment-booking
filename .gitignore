@@ -10,4 +10,4 @@ docker-compose.override.yml
 Thumbs.db
 
 ### Logi ###
-*.log
+*.logp

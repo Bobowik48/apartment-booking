@@ -1,1 +1,59 @@
-<p>my-reservations works!</p>
+<div class="page">
+    <p class="page__eyebrow">{{ text.eyebrow }}</p>
+    <h1 class="page__title">{{ text.title }}</h1>
+
+    @if (isLoading()) {
+    <p class="page__loading">{{ text.loading }}</p>
+    } @else if (reservations().length === 0) {
+    <div class="empty-state">
+        <p>{{ text.emptyText }}</p>
+        <a routerLink="/booking" class="btn">{{ text.emptyCta }}</a>
+    </div>
+    } @else {
+    <div class="reservation-list">
+        @for (reservation of reservations(); track reservation.id) {
+        <div class="reservation-card">
+            <div class="reservation-card__main">
+                <div class="reservation-card__header">
+                    <span class="reservation-card__number">#{{ reservation.id }}</span>
+                    <span class="badge" [class]="statusInfo(reservation.status).badgeClass">
+                        {{ statusInfo(reservation.status).label }}
+                    </span>
+                </div>
+
+                <div class="reservation-card__dates">
+                    <div class="date-block">
+                        <span class="date-block__label">{{ text.checkIn }}</span>
+                        <span class="date-block__value">{{ reservation.checkInDate | date: 'd MMM y' }}</span>
+                    </div>
+                    <span class="reservation-card__arrow">→</span>
+                    <div class="date-block">
+                        <span class="date-block__label">{{ text.checkOut }}</span>
+                        <span class="date-block__value">{{ reservation.checkOutDate | date: 'd MMM y' }}</span>
+                    </div>
+
+                    <div class="date-block date-block--divider">
+                        <span class="date-block__label">{{ text.nights }}</span>
+                        <span class="date-block__value">{{ nights(reservation) }}</span>
+                    </div>
+                    <div class="date-block">
+                        <span class="date-block__label">{{ text.guests }}</span>
+                        <span class="date-block__value">{{ reservation.guestsCount ?? text.guestsNotProvided }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reservation-card__side">
+                <span class="reservation-card__price">{{ reservation.totalPrice }} {{ text.currency }}</span>
+                <a [routerLink]="['/reservation-details']" [queryParams]="{ token: reservation.accessToken }"
+                    class="reservation-card__link">
+                    {{ text.detailsLink }}
+                </a>
+            </div>
+        </div>
+        }
+    </div>
+
+    <a routerLink="/booking" class="new-reservation-link">{{ text.newReservation }}</a>
+    }
+</div>

@@ -1,0 +1,219 @@
+.booking {
+    padding: var(--space-xl);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.booking__eyebrow {
+    color: var(--color-gold);
+    font-size: 0.75rem;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-xs);
+}
+
+.booking__title {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-xl);
+}
+
+.booking__layout {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+}
+
+.calendar-card,
+.summary-card,
+.guest-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: var(--space-lg);
+}
+
+.summary-card {
+    margin-bottom: var(--space-lg);
+}
+
+.side-eyebrow {
+    color: var(--color-gold);
+    font-size: 0.7rem;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    margin-bottom: var(--space-md);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-xs) 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.summary-row--breakdown {
+    color: var(--color-text-faint);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--space-xs);
+    padding-top: var(--space-sm);
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+}
+
+.summary-total__value {
+    font-family: var(--font-display);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-size: 1.5rem;
+    color: var(--color-gold);
+}
+
+.summary-placeholder {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-faint);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.booking__error {
+    color: var(--color-danger);
+    font-size: 0.85rem;
+    margin-bottom: var(--space-md);
+}
+
+.guest-card__submit {
+    width: 100%;
+}
+
+.guests-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+}
+
+.guests-row__label {
+    color: var(--color-text);
+    font-size: 0.9rem;
+}
+
+.guests-row__hint {
+    color: var(--color-text-faint);
+    font-size: 0.8rem;
+}
+
+.guests-control {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.guests-control__btn {
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: border-color var(--transition), color var(--transition);
+}
+
+.guests-control__btn:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+}
+
+.guests-control__count {
+    font-family: var(--font-display);
+    font-variant-numeric: lining-nums tabular-nums;
+    font-size: 1.2rem;
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.calendar-loading {
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: var(--space-xl) 0;
+}
+
+.calendar-legend {
+    display: flex;
+    gap: var(--space-lg);
+    margin-top: var(--space-md);
+    font-size: 0.75rem;
+    color: var(--color-text-faint);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.legend-dot--selected {
+    background: var(--color-gold);
+}
+
+.legend-dot--taken {
+    background: var(--color-text-faint);
+}
+
+/* ### Material Calendar override — dark/gold theme ### */
+::ng-deep .booking mat-calendar {
+    --mat-datepicker-calendar-container-background-color: transparent;
+}
+
+::ng-deep .booking .mat-calendar-table-header th,
+::ng-deep .booking .mat-calendar-period-button {
+    color: var(--color-text-muted) !important;
+}
+
+::ng-deep .booking .mat-calendar-previous-button,
+::ng-deep .booking .mat-calendar-next-button,
+::ng-deep .booking .mat-calendar-arrow {
+    color: var(--color-gold) !important;
+    fill: var(--color-gold) !important;
+}
+
+::ng-deep .booking .mat-calendar-body-cell-content {
+    color: var(--color-text) !important;
+    font-variant-numeric: lining-nums tabular-nums;
+    border-radius: 50% !important;
+}
+
+::ng-deep .booking .mat-calendar-body-disabled .mat-calendar-body-cell-content,
+::ng-deep .booking .mat-calendar-body-cell-content[disabled],
+::ng-deep .booking .mat-calendar-body-cell-content[aria-disabled="true"] {
+    color: var(--color-text-faint) !important;
+    opacity: 0.45 !important;
+    text-decoration: line-through;
+}
+
+::ng-deep .booking .range-start .mat-calendar-body-cell-content,
+::ng-deep .booking .range-end .mat-calendar-body-cell-content {
+    background: var(--color-gold) !important;
+    color: var(--color-bg) !important;
+}
+
+::ng-deep .booking .range-middle .mat-calendar-body-cell-content {
+    background: rgba(185, 144, 92, 0.18) !important;
+    color: var(--color-text) !important;
+}

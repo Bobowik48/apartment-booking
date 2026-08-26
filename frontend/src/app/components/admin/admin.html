@@ -1,1 +1,112 @@
-<p>admin works!</p>
+<div class="admin">
+    <p class="admin__eyebrow">{{ text.eyebrow }}</p>
+    <h1 class="admin__title">{{ text.title }}</h1>
+
+    <div class="admin__layout">
+        <section class="admin__form">
+            <div class="admin__section-header">
+                <h2>{{ text.dataSection }}</h2>
+            </div>
+
+            @if (errorMessage(); as error) {
+            <p class="admin__error">{{ error }}</p>
+            }
+            @if (successMessage(); as success) {
+            <p class="admin__success">{{ success }}</p>
+            }
+
+            <label class="field">
+                <span class="field__label">{{ text.nameLabel }}</span>
+                <input type="text" [value]="name()" (input)="updateName($any($event.target).value)" />
+            </label>
+
+            <label class="field">
+                <span class="field__label">{{ text.descriptionLabel }}</span>
+                <textarea rows="4" [value]="description()"
+                    (input)="updateDescription($any($event.target).value)"></textarea>
+            </label>
+
+            <div class="field-row">
+                <label class="field">
+                    <span class="field__label">{{ text.streetLabel }}</span>
+                    <input type="text" [value]="street()" (input)="updateStreet($any($event.target).value)" />
+                </label>
+
+                <label class="field field--small">
+                    <span class="field__label">{{ text.apartmentNumberLabel }}</span>
+                    <input type="text" [value]="apartmentNumber()"
+                        (input)="updateApartmentNumber($any($event.target).value)" />
+                </label>
+            </div>
+
+            <div class="field-row">
+                <label class="field">
+                    <span class="field__label">{{ text.districtLabel }}</span>
+                    <input type="text" [value]="district()" (input)="updateDistrict($any($event.target).value)" />
+                </label>
+
+                <label class="field">
+                    <span class="field__label">{{ text.cityLabel }}</span>
+                    <input type="text" [value]="city()" (input)="updateCity($any($event.target).value)" />
+                </label>
+            </div>
+
+            <div class="field-row">
+                <label class="field field--small">
+                    <span class="field__label">{{ text.areaLabel }}</span>
+                    <input type="number" [value]="area()" (input)="updateArea($any($event.target).value)" />
+                </label>
+
+                <label class="field field--small">
+                    <span class="field__label">{{ text.floorLabel }}</span>
+                    <input type="number" [value]="floor()" (input)="updateFloor($any($event.target).value)" />
+                </label>
+            </div>
+
+            <div class="field-row">
+                <label class="field field--small">
+                    <span class="field__label">{{ text.priceLabel }}</span>
+                    <input type="number" [value]="pricePerNight()"
+                        (input)="updatePricePerNight($any($event.target).value)" />
+                </label>
+
+                <label class="field field--small">
+                    <span class="field__label">{{ text.maxGuestsLabel }}</span>
+                    <input type="number" [value]="maxGuests()" (input)="updateMaxGuests($any($event.target).value)" />
+                </label>
+            </div>
+
+            <button class="btn admin__save" [disabled]="isSaving()" (click)="saveApartment()">
+                {{ isSaving() ? text.saveBusy : text.saveIdle }}
+            </button>
+        </section>
+
+        <section class="admin__gallery">
+            <div class="admin__section-header">
+                <h2>{{ text.gallerySection }}</h2>
+                <label class="btn-ghost admin__add-photo">
+                    {{ text.addPhoto }}
+                    <input type="file" accept="image/*" hidden [disabled]="isUploading()"
+                        (change)="onFileSelected($event)" />
+                </label>
+            </div>
+
+            @if (isUploading()) {
+            <p class="admin__uploading">{{ text.uploading }}</p>
+            }
+
+            <div class="gallery">
+                @for (photo of photos(); track photo.id) {
+                <div class="gallery__item">
+                    <img [src]="photoUrl(photo)" [alt]="photo.altText ?? name()" />
+                    <button class="gallery__delete" (click)="deletePhoto(photo)">{{ text.deletePhoto }}</button>
+                </div>
+                }
+            </div>
+
+            @if (photos().length > 0) {
+            <p class="admin__photo-count">{{ photos().length }}{{ text.photoCountSuffix }}</p>
+            }
+        </section>
+    </div>
+</div>

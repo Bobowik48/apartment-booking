@@ -1,20 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ApartmentService } from './core/services/apartment.service';
+import { Navbar } from './components/shared/navbar/navbar';
+import { Footer } from './components/shared/footer/footer';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Navbar, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  private apartmentService = inject(ApartmentService);
-
-  constructor() {
-    this.apartmentService.getApartment(1).subscribe({
-      next: apartment => console.log('OK:', apartment),
-      error: err => console.error('BŁĄD:', err)
-    });
-  }
-}
+export class App { }

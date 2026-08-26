@@ -16,4 +16,8 @@ export class ReservationService {
     getByAccessToken(accessToken: string): Observable<ReservationResponse> {
         return this.http.get<ReservationResponse>(`${API_ENDPOINTS.reservations}/${accessToken}`);
     }
+
+    getMyReservations(): Observable<ReservationResponse[]> {
+        return this.http.get<ReservationResponse[]>(`${API_ENDPOINTS.reservations}/my`);
+    }
 }

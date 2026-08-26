@@ -20,9 +20,19 @@ public class Apartment {
 
     private String description;
 
-    private String address;
+    private String street;
+
+    private String apartmentNumber;
+
+    private String district;
+
+    private String city;
 
     private BigDecimal pricePerNight;
 
     private Integer maxGuests;
+
+    private BigDecimal area;
+
+    private Integer floor;
 }

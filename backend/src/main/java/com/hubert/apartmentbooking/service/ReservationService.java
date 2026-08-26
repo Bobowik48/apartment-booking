@@ -90,4 +90,11 @@ public class ReservationService {
         return new ReservationResponse(reservation.getId(), reservation.getCheckInDate(), reservation.getCheckOutDate(),
                 reservation.getGuestsCount(), reservation.getTotalPrice(), reservation.getStatus(), reservation.getAccessToken());
     }
+
+    public List<ReservationResponse> getMyReservations(String email) {
+        return reservationRepository.findByUser_EmailOrderByCheckInDateDesc(email).stream()
+                .map(r -> new ReservationResponse(r.getId(), r.getCheckInDate(), r.getCheckOutDate(),
+                        r.getGuestsCount(), r.getTotalPrice(), r.getStatus(), r.getAccessToken()))
+                .toList();
+    }
 }

@@ -22,4 +22,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             @Param("excludedStatus") ReservationStatus excludedStatus);
 
     Optional<Reservation> findByAccessToken(String accessToken);
+
+    List<Reservation> findByUser_EmailOrderByCheckInDateDesc(String email);
 }

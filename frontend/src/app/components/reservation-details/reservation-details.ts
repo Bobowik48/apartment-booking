@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ReservationService } from '../../core/services/reservation.service';
 import { ReservationResponse } from '../../core/models/reservation.model';
+import { UI_TEXT } from '../../core/constants/constants';
 
 @Component({
   selector: 'app-reservation-details',
@@ -13,6 +14,9 @@ import { ReservationResponse } from '../../core/models/reservation.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReservationDetails implements OnInit {
+  // ### Constants ###
+  readonly text = UI_TEXT.reservationDetails;
+
   // ### Dependencies ###
   private route = inject(ActivatedRoute);
 
