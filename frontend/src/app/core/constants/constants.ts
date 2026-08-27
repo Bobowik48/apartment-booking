@@ -16,6 +16,8 @@ export const DEFAULT_APARTMENT_ID = 1;
 
 export const TOKEN_STORAGE_KEY = 'auth_token';
 
+export const TURNSTILE_SITE_KEY = '0x4AAAAAAEdydktyje4kLdXd'; // if you want it to work on test mode change on 1x00000000000000000000AA
+
 export interface StatusInfo {
     label: string;
     badgeClass: string;
@@ -97,10 +99,17 @@ export const UI_TEXT = {
             eyebrow: 'Residenza Aurea',
             title: 'Utwórz konto',
             subtitle: 'Zarządzaj rezerwacjami w jednym miejscu.',
+            fullNameLabel: 'Imię i nazwisko',
+            fullNamePlaceholder: 'Jan Kowalski',
             emailLabel: 'Adres e-mail',
             emailPlaceholder: 'jan@example.com',
+            phoneLabel: 'Numer telefonu',
+            phonePlaceholder: '+48 600 000 000',
             passwordLabel: 'Hasło',
             passwordPlaceholder: 'Min. 8 znaków',
+            confirmPasswordLabel: 'Powtórz hasło',
+            confirmPasswordPlaceholder: 'Powtórz hasło',
+            passwordMismatch: 'Hasła nie są identyczne.',
             submitIdle: 'Zarejestruj się',
             submitBusy: 'Rejestracja...',
             footerText: 'Masz już konto? ',
@@ -144,7 +153,7 @@ export const UI_TEXT = {
         deletePhoto: 'Usuń',
         photoCountSuffix: ' zdjęć w galerii',
     },
-    
+
     myReservations: {
         eyebrow: 'Konto',
         title: 'Moje rezerwacje',

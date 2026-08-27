@@ -1,20 +1,25 @@
 <nav class="navbar">
     <a routerLink="/" class="navbar__logo">{{ text.logo }}</a>
 
-    <div class="navbar__right">
-        <a routerLink="/booking" class="navbar__link">{{ text.booking }}</a>
+    <button class="navbar__toggle" type="button" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen()"
+        aria-label="Menu">
+        <img src="assets/icons/menu.svg" alt="" width="24" height="24" />
+    </button>
+
+    <div class="navbar__right" [class.navbar__right--open]="isMenuOpen()">
+        <a routerLink="/booking" class="navbar__link" (click)="closeMenu()">{{ text.booking }}</a>
 
         @if (authService.currentUser(); as user) {
-        <a routerLink="/my-reservations" class="navbar__link">{{ text.myReservations }}</a>
+        <a routerLink="/my-reservations" class="navbar__link" (click)="closeMenu()">{{ text.myReservations }}</a>
         @if (user.role === 'ADMIN') {
-        <a routerLink="/admin" class="navbar__link">{{ text.adminPanel }}</a>
+        <a routerLink="/admin" class="navbar__link" (click)="closeMenu()">{{ text.adminPanel }}</a>
         }
         <span class="navbar__divider"></span>
         <span class="navbar__email">{{ user.email }}</span>
         <button class="btn-ghost navbar__logout" (click)="logout()">{{ text.logout }}</button>
         } @else {
-        <a routerLink="/login" class="navbar__link">{{ text.login }}</a>
-        <a routerLink="/register" class="navbar__link">{{ text.register }}</a>
+        <a routerLink="/login" class="navbar__link" (click)="closeMenu()">{{ text.login }}</a>
+        <a routerLink="/register" class="navbar__link" (click)="closeMenu()">{{ text.register }}</a>
         }
     </div>
 </nav>

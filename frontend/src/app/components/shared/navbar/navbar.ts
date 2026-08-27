@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { UI_TEXT } from '../../../core/constants/constants';
@@ -18,8 +18,19 @@ export class Navbar {
   // ### Services ###
   authService = inject(AuthService);
 
-  // ### Auth ###
+  // ### Fields ###
+  readonly isMenuOpen = signal(false);
+
+  toggleMenu(): void {
+    this.isMenuOpen.update(open => !open);
+  }
+
+  closeMenu(): void {
+    this.isMenuOpen.set(false);
+  }
+
   logout(): void {
     this.authService.logout();
+    this.closeMenu();
   }
 }

@@ -29,4 +29,6 @@ public final class Constants {
     public static final String RESERVATION_NOT_FOUND = "RESERVATION_NOT_FOUND";
     public static final String VALIDATION_FAILED = "VALIDATION_FAILED";
     public static final String FILE_TOO_LARGE = "FILE_TOO_LARGE";
+    public static final String INVALID_PHONE_FORMAT = "INVALID_PHONE_FORMAT";
+    public static final String INVALID_CAPTCHA = "INVALID_CAPTCHA";
 }

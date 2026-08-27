@@ -9,9 +9,21 @@
         }
 
         <label class="field">
+            <span class="field__label">{{ text.fullNameLabel }}</span>
+            <input type="text" [placeholder]="text.fullNamePlaceholder" [value]="fullName()"
+                (input)="updateFullName($any($event.target).value)" />
+        </label>
+
+        <label class="field">
             <span class="field__label">{{ text.emailLabel }}</span>
             <input type="email" [placeholder]="text.emailPlaceholder" [value]="email()"
                 (input)="updateEmail($any($event.target).value)" />
+        </label>
+
+        <label class="field">
+            <span class="field__label">{{ text.phoneLabel }}</span>
+            <input type="tel" [placeholder]="text.phonePlaceholder" [value]="phone()"
+                (input)="updatePhone($any($event.target).value)" />
         </label>
 
         <label class="field">
@@ -20,10 +32,23 @@
                 (input)="updatePassword($any($event.target).value)" />
         </label>
 
+        <label class="field">
+            <span class="field__label">{{ text.confirmPasswordLabel }}</span>
+            <input type="password" [placeholder]="text.confirmPasswordPlaceholder" [value]="confirmPassword()"
+                (input)="updateConfirmPassword($any($event.target).value)" />
+        </label>
+
+        @if (password().length > 0 && confirmPassword().length > 0 && !passwordsMatch()) {
+        <p class="field-hint field-hint--error">{{ text.passwordMismatch }}</p>
+        }
+
+        <div class="captcha-slot">
+            <div #turnstileContainer></div>
+        </div>
+
         <button class="btn" [disabled]="!canSubmit()" (click)="submit()">
             {{ isSubmitting() ? text.submitBusy : text.submitIdle }}
         </button>
-    </div>
 
-    <p class="auth-footer">{{ text.footerText }}<a routerLink="/login">{{ text.footerLink }}</a></p>
-</div>
+        <p class="auth-footer">{{ text.footerText }}<a routerLink="/login">{{ text.footerLink }}</a></p>
+    </div>

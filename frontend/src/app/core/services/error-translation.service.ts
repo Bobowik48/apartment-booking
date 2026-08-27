@@ -15,6 +15,8 @@ const ERROR_TRANSLATIONS_PL: Record<string, string> = {
   RESERVATION_NOT_FOUND: 'Nie znaleziono rezerwacji.',
   VALIDATION_FAILED: 'Wprowadzone dane są nieprawidłowe.',
   FILE_TOO_LARGE: 'Plik jest zbyt duży. Maksymalny rozmiar to 10 MB.',
+  INVALID_PHONE_FORMAT: "Niepoprawny format numeru telefonu. Spróbuj ponownie.",
+  INVALID_CAPTCHA: "Weryfikacja captcha nie powiodła się. Spróbuj ponownie."
 };
 
 const FALLBACK_MESSAGE_PL = 'Wystąpił nieoczekiwany błąd. Spróbuj ponownie.';

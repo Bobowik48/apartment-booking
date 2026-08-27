@@ -60,4 +60,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleMaxUploadSize(MaxUploadSizeExceededException ex) {
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(Map.of("errorCode", "FILE_TOO_LARGE"));
     }
+
+    @ExceptionHandler(InvalidCaptchaException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidCaptcha(InvalidCaptchaException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorCode", ex.getMessage()));
+    }
 }

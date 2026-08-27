@@ -1,8 +1,11 @@
 export type UserRole = 'USER' | 'ADMIN';
 
 export interface RegisterRequest {
+    fullName: string;
     email: string;
+    phone: string;
     password: string;
+    captchaToken: string;
 }
 
 export interface LoginRequest {
