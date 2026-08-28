@@ -29,3 +29,9 @@ export interface ResetPasswordRequest {
     newPassword: string;
     confirmPassword: string;
 }
+
+export interface UserProfileResponse {
+    fullName: string;
+    email: string;
+    phone: string;
+}

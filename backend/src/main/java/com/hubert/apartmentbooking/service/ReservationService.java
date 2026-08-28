@@ -12,6 +12,8 @@ import com.hubert.apartmentbooking.model.enums.ReservationStatus;
 import com.hubert.apartmentbooking.repository.ApartmentRepository;
 import com.hubert.apartmentbooking.repository.ReservationRepository;
 import com.hubert.apartmentbooking.repository.UserRepository;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -40,7 +43,7 @@ public class ReservationService {
         this.availabilityService = availabilityService;
     }
 
-    public ReservationResponse createReservation(CreateReservationRequest request) {
+    public ReservationResponse createReservation(CreateReservationRequest request, Authentication authentication) {
         Apartment apartment = apartmentRepository.findById(request.apartmentId())
                 .orElseThrow(() -> new ApartmentNotFoundException(
                         String.format(Constants.APARTMENT_NOT_FOUND, request.apartmentId())));
@@ -61,26 +64,38 @@ public class ReservationService {
         reservation.setCheckInDate(request.checkInDate());
         reservation.setCheckOutDate(request.checkOutDate());
         reservation.setGuestsCount(request.guestsCount());
-        reservation.setGuestName(request.guestName());
-        reservation.setGuestEmail(request.guestEmail());
-        reservation.setGuestPhone(request.guestPhone());
         reservation.setStatus(ReservationStatus.PENDING_PAYMENT);
         reservation.setAccessToken(UUID.randomUUID().toString());
         reservation.setCreatedAt(LocalDateTime.now());
 
+        Optional<User> loggedInUser = resolveAuthenticatedUser(authentication);
+        if (loggedInUser.isPresent()) {
+            User user = loggedInUser.get();
+            reservation.setUser(user);
+            reservation.setGuestName(user.getFullName());
+            reservation.setGuestEmail(user.getEmail());
+            reservation.setGuestPhone(user.getPhone());
+        } else {
+            reservation.setGuestName(request.guestName());
+            reservation.setGuestEmail(request.guestEmail());
+            reservation.setGuestPhone(request.guestPhone());
+        }
+
         long nights = ChronoUnit.DAYS.between(request.checkInDate(), request.checkOutDate());
         reservation.setTotalPrice(apartment.getPricePerNight().multiply(BigDecimal.valueOf(nights)));
-
-        if (request.userId() != null) {
-            User user = userRepository.findById(request.userId())
-                    .orElseThrow(() -> new NoSuchElementException(Constants.USER_NOT_FOUND));
-            reservation.setUser(user);
-        }
 
         Reservation saved = reservationRepository.save(reservation);
 
         return new ReservationResponse(saved.getId(), saved.getCheckInDate(), saved.getCheckOutDate(),
                 saved.getGuestsCount(), saved.getTotalPrice(), saved.getStatus(), saved.getAccessToken());
+    }
+
+    private Optional<User> resolveAuthenticatedUser(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()
+                || authentication instanceof AnonymousAuthenticationToken) {
+            return Optional.empty();
+        }
+        return userRepository.findByEmail(authentication.getName());
     }
 
     public ReservationResponse getByAccessToken(String accessToken) {

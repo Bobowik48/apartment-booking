@@ -1,5 +1,5 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { UI_TEXT } from '../../../core/constants/constants';
 
@@ -14,6 +14,9 @@ import { UI_TEXT } from '../../../core/constants/constants';
 export class Navbar {
   // ### Constants ###
   readonly text = UI_TEXT.navbar;
+
+  // ### Dependencies ###
+  private router = inject(Router);
 
   // ### Services ###
   authService = inject(AuthService);
@@ -32,5 +35,6 @@ export class Navbar {
   logout(): void {
     this.authService.logout();
     this.closeMenu();
+    this.router.navigate(['/']);
   }
 }

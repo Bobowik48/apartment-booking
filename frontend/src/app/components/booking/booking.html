@@ -73,24 +73,29 @@
             </div>
 
             <div class="guest-card">
-                <p class="side-eyebrow">{{ text.guestCardTitle }}</p>
+                <div class="guest-card__header">
+                    <p class="side-eyebrow">{{ text.guestCardTitle }}</p>
+                    @if (isLoggedIn()) {
+                    <a class="guest-card__change-link" routerLink="/account">{{ text.changeDataLink }}</a>
+                    }
+                </div>
 
                 <label class="field">
                     <span class="field__label">{{ text.nameLabel }}</span>
                     <input type="text" [placeholder]="text.namePlaceholder" [value]="guestName()"
-                        (input)="updateGuestName($any($event.target).value)" />
+                        [disabled]="isLoggedIn()" (input)="updateGuestName($any($event.target).value)" />
                 </label>
 
                 <label class="field">
                     <span class="field__label">{{ text.emailLabel }}</span>
                     <input type="email" [placeholder]="text.emailPlaceholder" [value]="guestEmail()"
-                        (input)="updateGuestEmail($any($event.target).value)" />
+                        [disabled]="isLoggedIn()" (input)="updateGuestEmail($any($event.target).value)" />
                 </label>
 
                 <label class="field">
                     <span class="field__label">{{ text.phoneLabel }}</span>
                     <input type="tel" [placeholder]="text.phonePlaceholder" [value]="guestPhone()"
-                        (input)="updateGuestPhone($any($event.target).value)" />
+                        [disabled]="isLoggedIn()" (input)="updateGuestPhone($any($event.target).value)" />
                 </label>
 
                 @if (errorMessage(); as error) {

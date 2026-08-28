@@ -28,8 +28,6 @@ public record CreateReservationRequest(
         String guestEmail,
 
         @NotBlank(message = Constants.REQUIRED_FIELD_MISSING)
-        String guestPhone,
-
-        Long userId
+        String guestPhone
 ) {
 }

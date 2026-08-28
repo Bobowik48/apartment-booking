@@ -21,8 +21,8 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ReservationResponse createReservation(@Valid @RequestBody CreateReservationRequest request) {
-        return reservationService.createReservation(request);
+    public ReservationResponse createReservation(@Valid @RequestBody CreateReservationRequest request, Authentication authentication) {
+        return reservationService.createReservation(request, authentication);
     }
 
     @GetMapping("/{accessToken}")

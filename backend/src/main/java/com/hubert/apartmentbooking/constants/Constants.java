@@ -16,6 +16,8 @@ public final class Constants {
     public static final String MY_RESERVATIONS_PATH = "/my";
     public static final String FORGOT_PASSWORD_ENDPOINT = "/forgot-password";
     public static final String RESET_PASSWORD_ENDPOINT = "/reset-password";
+    public static final String USERS_PATH = "/api/users";
+    public static final String ME_ENDPOINT = "/me";
 
     // Error codes
     public static final String APARTMENT_NOT_FOUND = "APARTMENT_NOT_FOUND";

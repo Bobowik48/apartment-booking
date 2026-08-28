@@ -43,6 +43,34 @@
     margin-bottom: var(--space-md);
 }
 
+.guest-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--space-md);
+}
+
+.guest-card__header .side-eyebrow {
+    margin-bottom: 0;
+}
+
+.guest-card__change-link {
+    font-size: 0.78rem;
+    color: var(--color-gold);
+}
+
+.guest-card__change-link:hover {
+    color: var(--color-gold-light);
+}
+
+.guest-card input:disabled {
+    border-color: transparent;
+    background: transparent;
+    padding-left: 0;
+    color: var(--color-text);
+    cursor: default;
+}
+
 .summary-row {
     display: flex;
     justify-content: space-between;
@@ -216,4 +244,19 @@
 ::ng-deep .booking .range-middle .mat-calendar-body-cell-content {
     background: rgba(185, 144, 92, 0.18) !important;
     color: var(--color-text) !important;
+}
+
+@media (max-width: 600px) {
+    .booking {
+        padding: var(--space-md) var(--space-sm);
+    }
+
+    .booking__layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+
+    .booking__title {
+        font-size: 1.8rem;
+    }
 }

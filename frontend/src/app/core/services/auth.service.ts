@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { AuthResponse, LoginRequest, RegisterRequest, ResetPasswordRequest } from '../models/auth.model';
+import { AuthResponse, LoginRequest, RegisterRequest, ResetPasswordRequest, UserProfileResponse } from '../models/auth.model';
 import { API_ENDPOINTS, TOKEN_STORAGE_KEY } from '../constants/constants';
 
 @Injectable({ providedIn: 'root' })
@@ -40,6 +40,10 @@ export class AuthService {
 
     getToken(): string | null {
         return localStorage.getItem(TOKEN_STORAGE_KEY);
+    }
+
+    getMyProfile(): Observable<UserProfileResponse> {
+        return this.http.get<UserProfileResponse>(API_ENDPOINTS.users.me);
     }
 
     isLoggedIn(): boolean {

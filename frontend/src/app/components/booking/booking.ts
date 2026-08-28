@@ -1,6 +1,6 @@
 import { Component, inject, signal, computed, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe, UpperCasePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatCalendar, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AvailabilityService } from '../../core/services/availability.service';
@@ -9,11 +9,12 @@ import { Apartment } from '../../core/models/apartment.model';
 import { DEFAULT_APARTMENT_ID, UI_TEXT } from '../../core/constants/constants';
 import { ReservationService } from '../../core/services/reservation.service';
 import { ErrorTranslationService } from '../../core/services/error-translation.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [MatDatepickerModule, MatNativeDateModule, DatePipe, UpperCasePipe],
+  imports: [MatDatepickerModule, MatNativeDateModule, DatePipe, UpperCasePipe, RouterLink],
   templateUrl: './booking.html',
   styleUrl: './booking.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -30,6 +31,7 @@ export class Booking implements OnInit {
   private apartmentService = inject(ApartmentService);
   private reservationService = inject(ReservationService);
   private errorTranslationService = inject(ErrorTranslationService);
+  private authService = inject(AuthService);
 
   // ### Constants ###
   readonly today = new Date();
@@ -46,6 +48,7 @@ export class Booking implements OnInit {
   readonly isSubmitting = signal(false);
   readonly isAvailabilityLoaded = signal(false);
   readonly guestsCount = signal(1);
+  readonly isLoggedIn = signal(this.authService.isLoggedIn());
   @ViewChild(MatCalendar) private calendar?: MatCalendar<Date>;
 
   readonly nights = computed(() => {
@@ -87,6 +90,14 @@ export class Booking implements OnInit {
     const to = this.formatDate(this.maxDate);
     this.availabilityService.loadAvailability(DEFAULT_APARTMENT_ID, from, to)
       .subscribe(() => this.isAvailabilityLoaded.set(true));
+
+    if (this.isLoggedIn()) {
+      this.authService.getMyProfile().subscribe(profile => {
+        this.guestName.set(profile.fullName);
+        this.guestEmail.set(profile.email);
+        this.guestPhone.set(profile.phone);
+      });
+    }
   }
 
   dateFilterFn = (date: Date | null): boolean => {
@@ -124,11 +135,25 @@ export class Booking implements OnInit {
       this.selectedCheckOut.set(null);
     } else if (date <= checkIn) {
       this.selectedCheckIn.set(date);
+    } else if (this.hasUnavailableDateInRange(checkIn, date)) {
+      this.selectedCheckIn.set(date);
+      this.selectedCheckOut.set(null);
     } else {
       this.selectedCheckOut.set(date);
     }
 
     this.calendar?.updateTodaysDate();
+  }
+
+  private hasUnavailableDateInRange(checkIn: Date, checkOut: Date): boolean {
+    const cursor = new Date(checkIn);
+    while (cursor < checkOut) {
+      if (this.availabilityService.isDateUnavailable(this.formatDate(cursor))) {
+        return true;
+      }
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    return false;
   }
 
   incrementGuests(): void {

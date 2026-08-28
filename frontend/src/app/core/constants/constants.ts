@@ -12,6 +12,9 @@ export const API_ENDPOINTS = {
         forgotPassword: `${API_BASE_URL}/api/auth/forgot-password`,
         resetPassword: `${API_BASE_URL}/api/auth/reset-password`,
     },
+    users: {
+        me: `${API_BASE_URL}/api/users/me`,
+    },
 } as const;
 
 export const DEFAULT_APARTMENT_ID = 1;
@@ -80,6 +83,7 @@ export const UI_TEXT = {
         submitIdle: 'Rezerwuj',
         submitBusy: 'Wysyłanie...',
         currency: 'PLN',
+        changeDataLink: 'Zmień dane',
         nightsAt: (price: number, nights: number, label: string) => `${price} PLN × ${nights} ${label}`,
     },
 
