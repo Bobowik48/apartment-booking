@@ -49,6 +49,5 @@
         <button class="btn" [disabled]="!canSubmit()" (click)="submit()">
             {{ isSubmitting() ? text.submitBusy : text.submitIdle }}
         </button>
-
-        <p class="auth-footer">{{ text.footerText }}<a routerLink="/login">{{ text.footerLink }}</a></p>
     </div>
+    <p class="auth-footer">{{ text.footerText }}<a routerLink="/login">{{ text.footerLink }}</a></p>

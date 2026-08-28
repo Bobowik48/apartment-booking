@@ -1,8 +1,10 @@
 package com.hubert.apartmentbooking.controller;
 
 import com.hubert.apartmentbooking.constants.Constants;
+import com.hubert.apartmentbooking.dto.request.ForgotPasswordRequest;
 import com.hubert.apartmentbooking.dto.request.LoginRequest;
 import com.hubert.apartmentbooking.dto.request.RegisterRequest;
+import com.hubert.apartmentbooking.dto.request.ResetPasswordRequest;
 import com.hubert.apartmentbooking.dto.response.AuthResponse;
 import com.hubert.apartmentbooking.service.AuthService;
 import jakarta.validation.Valid;
@@ -29,5 +31,15 @@ public class AuthController {
     @PostMapping(Constants.LOGIN_ENDPOINT)
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
+    }
+
+    @PostMapping(Constants.FORGOT_PASSWORD_ENDPOINT)
+    public void forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        authService.forgotPassword(request);
+    }
+
+    @PostMapping(Constants.RESET_PASSWORD_ENDPOINT)
+    public void resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        authService.resetPassword(request);
     }
 }

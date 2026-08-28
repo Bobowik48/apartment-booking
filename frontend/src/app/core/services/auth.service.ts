@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { AuthResponse, LoginRequest, RegisterRequest } from '../models/auth.model';
+import { AuthResponse, LoginRequest, RegisterRequest, ResetPasswordRequest } from '../models/auth.model';
 import { API_ENDPOINTS, TOKEN_STORAGE_KEY } from '../constants/constants';
 
 @Injectable({ providedIn: 'root' })
@@ -23,6 +23,14 @@ export class AuthService {
     register(request: RegisterRequest): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(API_ENDPOINTS.auth.register, request)
             .pipe(tap(response => this.setSession(response)));
+    }
+
+    forgotPassword(email: string): Observable<void> {
+        return this.http.post<void>(API_ENDPOINTS.auth.forgotPassword, { email });
+    }
+
+    resetPassword(request: ResetPasswordRequest): Observable<void> {
+        return this.http.post<void>(API_ENDPOINTS.auth.resetPassword, request);
     }
 
     logout(): void {

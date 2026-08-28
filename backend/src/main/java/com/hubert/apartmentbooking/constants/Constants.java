@@ -14,6 +14,8 @@ public final class Constants {
     public static final String ADMIN_PATH = "/api/admin";
     public static final String APARTMENTS_PATH = "/api/apartments";
     public static final String MY_RESERVATIONS_PATH = "/my";
+    public static final String FORGOT_PASSWORD_ENDPOINT = "/forgot-password";
+    public static final String RESET_PASSWORD_ENDPOINT = "/reset-password";
 
     // Error codes
     public static final String APARTMENT_NOT_FOUND = "APARTMENT_NOT_FOUND";
@@ -28,7 +30,10 @@ public final class Constants {
     public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
     public static final String RESERVATION_NOT_FOUND = "RESERVATION_NOT_FOUND";
     public static final String VALIDATION_FAILED = "VALIDATION_FAILED";
-    public static final String FILE_TOO_LARGE = "FILE_TOO_LARGE";
     public static final String INVALID_PHONE_FORMAT = "INVALID_PHONE_FORMAT";
     public static final String INVALID_CAPTCHA = "INVALID_CAPTCHA";
+    public static final String EMAIL_SEND_FAILED = "EMAIL_SEND_FAILED";
+    public static final String INVALID_RESET_TOKEN = "INVALID_RESET_TOKEN";
+    public static final String RESET_TOKEN_EXPIRED = "RESET_TOKEN_EXPIRED";
+    public static final String PASSWORDS_DO_NOT_MATCH = "PASSWORDS_DO_NOT_MATCH";
 }

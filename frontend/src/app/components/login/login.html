@@ -15,7 +15,10 @@
         </label>
 
         <label class="field">
-            <span class="field__label">{{ text.passwordLabel }}</span>
+            <div class="field__label-row">
+                <span class="field__label">{{ text.passwordLabel }}</span>
+                <a class="field__forgot-link" routerLink="/forgot-password">{{ text.forgotPasswordLink }}</a>
+            </div>
             <input type="password" [placeholder]="text.passwordPlaceholder" [value]="password()"
                 (input)="updatePassword($any($event.target).value)" />
         </label>

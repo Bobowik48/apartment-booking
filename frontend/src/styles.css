@@ -198,6 +198,12 @@ input:-webkit-autofill:focus {
     margin-bottom: var(--space-md);
 }
 
+.auth-success {
+    color: var(--color-success);
+    font-size: 0.85rem;
+    margin-bottom: var(--space-md);
+}
+
 .auth-card .btn {
     width: 100%;
     margin-top: var(--space-sm);

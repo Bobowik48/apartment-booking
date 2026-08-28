@@ -1,0 +1,15 @@
+.field__label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.field__forgot-link {
+    font-size: 0.78rem;
+    color: var(--color-gold);
+    text-decoration: none;
+}
+
+.field__forgot-link:hover {
+    color: var(--color-text-faint);
+}

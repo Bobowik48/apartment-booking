@@ -16,7 +16,10 @@ const ERROR_TRANSLATIONS_PL: Record<string, string> = {
   VALIDATION_FAILED: 'Wprowadzone dane są nieprawidłowe.',
   FILE_TOO_LARGE: 'Plik jest zbyt duży. Maksymalny rozmiar to 10 MB.',
   INVALID_PHONE_FORMAT: "Niepoprawny format numeru telefonu. Spróbuj ponownie.",
-  INVALID_CAPTCHA: "Weryfikacja captcha nie powiodła się. Spróbuj ponownie."
+  INVALID_CAPTCHA: "Weryfikacja captcha nie powiodła się. Spróbuj ponownie.",
+  INVALID_RESET_TOKEN: 'Link do resetu hasła jest nieprawidłowy. Poproś o nowy.',
+  RESET_TOKEN_EXPIRED: 'Link do resetu hasła wygasł. Poproś o nowy.',
+  PASSWORDS_DO_NOT_MATCH: 'Hasła nie są identyczne.',
 };
 
 const FALLBACK_MESSAGE_PL = 'Wystąpił nieoczekiwany błąd. Spróbuj ponownie.';
