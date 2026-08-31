@@ -12,13 +12,18 @@ import com.hubert.apartmentbooking.model.enums.ReservationStatus;
 import com.hubert.apartmentbooking.repository.ApartmentRepository;
 import com.hubert.apartmentbooking.repository.ReservationRepository;
 import com.hubert.apartmentbooking.repository.UserRepository;
+import com.hubert.apartmentbooking.util.EmailTemplates;
+import com.hubert.apartmentbooking.util.EmailTexts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -32,17 +37,24 @@ public class ReservationService {
     private final ApartmentRepository apartmentRepository;
     private final UserRepository userRepository;
     private final AvailabilityService availabilityService;
+    private final EmailService emailService;
+    private final String frontendUrl;
 
     public ReservationService(ReservationRepository reservationRepository,
                               ApartmentRepository apartmentRepository,
                               UserRepository userRepository,
-                              AvailabilityService availabilityService) {
+                              AvailabilityService availabilityService,
+                              EmailService emailService,
+                              @Value("${app.frontend.url}") String frontendUrl) {
         this.reservationRepository = reservationRepository;
         this.apartmentRepository = apartmentRepository;
         this.userRepository = userRepository;
         this.availabilityService = availabilityService;
+        this.emailService = emailService;
+        this.frontendUrl = frontendUrl;
     }
 
+    @Transactional
     public ReservationResponse createReservation(CreateReservationRequest request, Authentication authentication) {
         Apartment apartment = apartmentRepository.findById(request.apartmentId())
                 .orElseThrow(() -> new ApartmentNotFoundException(
@@ -86,8 +98,30 @@ public class ReservationService {
 
         Reservation saved = reservationRepository.save(reservation);
 
+        emailService.send(saved.getGuestEmail(), EmailTexts.RESERVATION_CONFIRMATION_SUBJECT,
+                buildReservationConfirmationEmail(saved));
+
         return new ReservationResponse(saved.getId(), saved.getCheckInDate(), saved.getCheckOutDate(),
                 saved.getGuestsCount(), saved.getTotalPrice(), saved.getStatus(), saved.getAccessToken());
+    }
+
+    private String buildReservationConfirmationEmail(Reservation reservation) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d.MM.yyyy");
+        String greeting = EmailTexts.RESERVATION_CONFIRMATION_GREETING.formatted(reservation.getGuestName());
+        String intro = EmailTexts.RESERVATION_CONFIRMATION_INTRO.formatted(
+                reservation.getCheckInDate().format(dateFormatter),
+                reservation.getCheckOutDate().format(dateFormatter),
+                reservation.getGuestsCount(),
+                reservation.getTotalPrice());
+        String bodyHtml = "<p>%s</p><p>%s</p>".formatted(greeting, intro);
+        String detailsUrl = "%s/reservation-details?token=%s".formatted(frontendUrl, reservation.getAccessToken());
+
+        return EmailTemplates.button(
+                EmailTexts.RESERVATION_CONFIRMATION_SUBJECT,
+                bodyHtml,
+                EmailTexts.RESERVATION_CONFIRMATION_BUTTON_TEXT,
+                detailsUrl,
+                EmailTexts.RESERVATION_CONFIRMATION_FOOTER);
     }
 
     private Optional<User> resolveAuthenticatedUser(Authentication authentication) {
