@@ -83,19 +83,31 @@
                 <label class="field">
                     <span class="field__label">{{ text.nameLabel }}</span>
                     <input type="text" [placeholder]="text.namePlaceholder" [value]="guestName()"
-                        [disabled]="isLoggedIn()" (input)="updateGuestName($any($event.target).value)" />
+                        [disabled]="isLoggedIn()" (input)="updateGuestName($any($event.target).value)"
+                        (blur)="markNameTouched()" />
+                    @if (!isLoggedIn() && touchedName() && nameError(); as error) {
+                    <span class="field__error">{{ error }}</span>
+                    }
                 </label>
 
                 <label class="field">
                     <span class="field__label">{{ text.emailLabel }}</span>
                     <input type="email" [placeholder]="text.emailPlaceholder" [value]="guestEmail()"
-                        [disabled]="isLoggedIn()" (input)="updateGuestEmail($any($event.target).value)" />
+                        [disabled]="isLoggedIn()" (input)="updateGuestEmail($any($event.target).value)"
+                        (blur)="markEmailTouched()" />
+                    @if (!isLoggedIn() && touchedEmail() && emailError(); as error) {
+                    <span class="field__error">{{ error }}</span>
+                    }
                 </label>
 
                 <label class="field">
                     <span class="field__label">{{ text.phoneLabel }}</span>
                     <input type="tel" [placeholder]="text.phonePlaceholder" [value]="guestPhone()"
-                        [disabled]="isLoggedIn()" (input)="updateGuestPhone($any($event.target).value)" />
+                        [disabled]="isLoggedIn()" (input)="updateGuestPhone($any($event.target).value)"
+                        (blur)="markPhoneTouched()" />
+                    @if (!isLoggedIn() && touchedPhone() && phoneError(); as error) {
+                    <span class="field__error">{{ error }}</span>
+                    }
                 </label>
 
                 @if (errorMessage(); as error) {

@@ -39,19 +39,22 @@ public class ReservationService {
     private final AvailabilityService availabilityService;
     private final EmailService emailService;
     private final String frontendUrl;
+    private final int pendingPaymentExpirationMinutes;
 
     public ReservationService(ReservationRepository reservationRepository,
                               ApartmentRepository apartmentRepository,
                               UserRepository userRepository,
                               AvailabilityService availabilityService,
                               EmailService emailService,
-                              @Value("${app.frontend.url}") String frontendUrl) {
+                              @Value("${app.frontend.url}") String frontendUrl,
+                              @Value("${app.reservation.pending-payment-expiration-minutes}") int pendingPaymentExpirationMinutes) {
         this.reservationRepository = reservationRepository;
         this.apartmentRepository = apartmentRepository;
         this.userRepository = userRepository;
         this.availabilityService = availabilityService;
         this.emailService = emailService;
         this.frontendUrl = frontendUrl;
+        this.pendingPaymentExpirationMinutes = pendingPaymentExpirationMinutes;
     }
 
     @Transactional
@@ -98,30 +101,33 @@ public class ReservationService {
 
         Reservation saved = reservationRepository.save(reservation);
 
-        emailService.send(saved.getGuestEmail(), EmailTexts.RESERVATION_CONFIRMATION_SUBJECT,
-                buildReservationConfirmationEmail(saved));
+        emailService.send(saved.getGuestEmail(), EmailTexts.RESERVATION_RECEIVED_SUBJECT,
+                buildReservationReceivedEmail(saved));
 
         return new ReservationResponse(saved.getId(), saved.getCheckInDate(), saved.getCheckOutDate(),
-                saved.getGuestsCount(), saved.getTotalPrice(), saved.getStatus(), saved.getAccessToken());
+                saved.getGuestsCount(), saved.getTotalPrice(), saved.getStatus(), saved.getAccessToken(),
+                saved.getGuestName(), saved.getGuestEmail(), saved.getGuestPhone(),
+                apartment.getName(), apartment.getStreet(), apartment.getApartmentNumber(), apartment.getCity());
     }
 
-    private String buildReservationConfirmationEmail(Reservation reservation) {
+    private String buildReservationReceivedEmail(Reservation reservation) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d.MM.yyyy");
-        String greeting = EmailTexts.RESERVATION_CONFIRMATION_GREETING.formatted(reservation.getGuestName());
-        String intro = EmailTexts.RESERVATION_CONFIRMATION_INTRO.formatted(
+        String greeting = EmailTexts.RESERVATION_RECEIVED_GREETING.formatted(reservation.getGuestName());
+        String intro = EmailTexts.RESERVATION_RECEIVED_INTRO.formatted(
                 reservation.getCheckInDate().format(dateFormatter),
                 reservation.getCheckOutDate().format(dateFormatter),
                 reservation.getGuestsCount(),
-                reservation.getTotalPrice());
+                reservation.getTotalPrice(),
+                pendingPaymentExpirationMinutes);
         String bodyHtml = "<p>%s</p><p>%s</p>".formatted(greeting, intro);
         String detailsUrl = "%s/reservation-details?token=%s".formatted(frontendUrl, reservation.getAccessToken());
 
         return EmailTemplates.button(
-                EmailTexts.RESERVATION_CONFIRMATION_SUBJECT,
+                EmailTexts.RESERVATION_RECEIVED_SUBJECT,
                 bodyHtml,
-                EmailTexts.RESERVATION_CONFIRMATION_BUTTON_TEXT,
+                EmailTexts.RESERVATION_RECEIVED_BUTTON_TEXT,
                 detailsUrl,
-                EmailTexts.RESERVATION_CONFIRMATION_FOOTER);
+                EmailTexts.RESERVATION_RECEIVED_FOOTER);
     }
 
     private Optional<User> resolveAuthenticatedUser(Authentication authentication) {
@@ -135,15 +141,21 @@ public class ReservationService {
     public ReservationResponse getByAccessToken(String accessToken) {
         Reservation reservation = reservationRepository.findByAccessToken(accessToken)
                 .orElseThrow(() -> new NoSuchElementException(Constants.RESERVATION_NOT_FOUND));
+        Apartment apartment = reservation.getApartment();
 
         return new ReservationResponse(reservation.getId(), reservation.getCheckInDate(), reservation.getCheckOutDate(),
-                reservation.getGuestsCount(), reservation.getTotalPrice(), reservation.getStatus(), reservation.getAccessToken());
+                reservation.getGuestsCount(), reservation.getTotalPrice(), reservation.getStatus(), reservation.getAccessToken(),
+                reservation.getGuestName(), reservation.getGuestEmail(), reservation.getGuestPhone(),
+                apartment.getName(), apartment.getStreet(), apartment.getApartmentNumber(), apartment.getCity());
     }
 
     public List<ReservationResponse> getMyReservations(String email) {
-        return reservationRepository.findByUser_EmailOrderByCheckInDateDesc(email).stream()
+        return reservationRepository.findByUser_EmailOrderByIdDesc(email).stream()
                 .map(r -> new ReservationResponse(r.getId(), r.getCheckInDate(), r.getCheckOutDate(),
-                        r.getGuestsCount(), r.getTotalPrice(), r.getStatus(), r.getAccessToken()))
+                        r.getGuestsCount(), r.getTotalPrice(), r.getStatus(), r.getAccessToken(),
+                        r.getGuestName(), r.getGuestEmail(), r.getGuestPhone(),
+                        r.getApartment().getName(), r.getApartment().getStreet(),
+                        r.getApartment().getApartmentNumber(), r.getApartment().getCity()))
                 .toList();
     }
 }

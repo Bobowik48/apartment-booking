@@ -36,6 +36,9 @@ export class Booking implements OnInit {
   // ### Constants ###
   readonly today = new Date();
   readonly maxDate = this.calculateMaxDate();
+  private readonly namePattern = /^[\p{L}\s'-]+$/u;
+  private readonly emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  private readonly phonePattern = /^\+?[0-9]{9,15}$/;
 
   // ### Fields ###
   readonly apartment = signal<Apartment | null>(null);
@@ -49,6 +52,9 @@ export class Booking implements OnInit {
   readonly isAvailabilityLoaded = signal(false);
   readonly guestsCount = signal(1);
   readonly isLoggedIn = signal(this.authService.isLoggedIn());
+  readonly touchedName = signal(false);
+  readonly touchedEmail = signal(false);
+  readonly touchedPhone = signal(false);
   @ViewChild(MatCalendar) private calendar?: MatCalendar<Date>;
 
   readonly nights = computed(() => {
@@ -69,11 +75,34 @@ export class Booking implements OnInit {
     return 'nocy';
   });
 
+  readonly nameError = computed(() => {
+    const name = this.guestName().trim();
+    if (name.length === 0) return 'Podaj imię i nazwisko.';
+    if (name.length < 3) return 'Imię i nazwisko musi mieć co najmniej 3 znaki.';
+    if (!this.namePattern.test(name)) return 'Imię i nazwisko może zawierać tylko litery.';
+    return null;
+  });
+
+  readonly emailError = computed(() => {
+    const email = this.guestEmail().trim();
+    if (email.length === 0) return 'Podaj adres e-mail.';
+    if (!this.emailPattern.test(email)) return 'Podaj prawidłowy adres e-mail.';
+    return null;
+  });
+
+  readonly phoneError = computed(() => {
+    const phone = this.guestPhone().trim();
+    if (phone.length === 0) return 'Podaj numer telefonu.';
+    const digitsOnly = phone.replace(/[\s-]/g, '');
+    if (!this.phonePattern.test(digitsOnly)) return 'Podaj prawidłowy numer telefonu (9-15 cyfr).';
+    return null;
+  });
+
   readonly canSubmit = computed(() => {
     return this.nights() > 0
-      && this.guestName().trim().length > 0
-      && this.guestEmail().trim().length > 0
-      && this.guestPhone().trim().length > 0
+      && !this.nameError()
+      && !this.emailError()
+      && !this.phoneError()
       && !this.isSubmitting();
   });
 
@@ -145,17 +174,6 @@ export class Booking implements OnInit {
     this.calendar?.updateTodaysDate();
   }
 
-  private hasUnavailableDateInRange(checkIn: Date, checkOut: Date): boolean {
-    const cursor = new Date(checkIn);
-    while (cursor < checkOut) {
-      if (this.availabilityService.isDateUnavailable(this.formatDate(cursor))) {
-        return true;
-      }
-      cursor.setDate(cursor.getDate() + 1);
-    }
-    return false;
-  }
-
   incrementGuests(): void {
     const max = this.apartment()?.maxGuests ?? 10;
     if (this.guestsCount() < max) this.guestsCount.update(v => v + 1);
@@ -177,7 +195,23 @@ export class Booking implements OnInit {
     this.guestPhone.set(value);
   }
 
+  markNameTouched(): void {
+    this.touchedName.set(true);
+  }
+
+  markEmailTouched(): void {
+    this.touchedEmail.set(true);
+  }
+
+  markPhoneTouched(): void {
+    this.touchedPhone.set(true);
+  }
+
   submitReservation(): void {
+    this.touchedName.set(true);
+    this.touchedEmail.set(true);
+    this.touchedPhone.set(true);
+
     if (!this.canSubmit()) return;
 
     const checkIn = this.selectedCheckIn();
@@ -219,6 +253,17 @@ export class Booking implements OnInit {
     const max = new Date(this.today);
     max.setMonth(max.getMonth() + 3);
     return max;
+  }
+
+  private hasUnavailableDateInRange(checkIn: Date, checkOut: Date): boolean {
+    const cursor = new Date(checkIn);
+    while (cursor < checkOut) {
+      if (this.availabilityService.isDateUnavailable(this.formatDate(cursor))) {
+        return true;
+      }
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    return false;
   }
 
   private formatDate(date: Date): string {

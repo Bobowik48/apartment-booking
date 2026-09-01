@@ -6,6 +6,7 @@ export const API_ENDPOINTS = {
     apartments: `${API_BASE_URL}/api/apartments`,
     availability: `${API_BASE_URL}/api/availability`,
     reservations: `${API_BASE_URL}/api/reservations`,
+    payments: `${API_BASE_URL}/api/payments`,
     auth: {
         register: `${API_BASE_URL}/api/auth/register`,
         login: `${API_BASE_URL}/api/auth/login`,
@@ -155,15 +156,31 @@ export const UI_TEXT = {
     reservationDetails: {
         loading: 'Ładowanie rezerwacji...',
         notFound: 'Nie znaleziono rezerwacji.',
-        titlePrefix: 'Rezerwacja #',
-        status: 'Status: ',
-        checkIn: 'Check-in: ',
-        checkOut: 'Check-out: ',
-        guestsLabel: 'Liczba gości: ',
-        guestsNotProvided: 'nie podano',
-        totalLabel: 'Suma: ',
-        currency: 'zł',
-        linkIntro: 'Link do tej rezerwacji (zapisz sobie, przyda się do sprawdzenia statusu):',
+        reservationLabel: 'Rezerwacja',
+        streetPrefix: 'ul. ',
+        apartmentNumberPrefix: 'Apt. ',
+        sectionStay: 'Pobyt',
+        checkIn: 'Zameldowanie',
+        checkOut: 'Wymeldowanie',
+        nightsLabel: 'Liczba nocy',
+        guestsLabel: 'Liczba gości',
+        sectionGuest: 'Dane gościa',
+        nameLabel: 'Imię i nazwisko',
+        emailLabel: 'Adres e-mail',
+        phoneLabel: 'Telefon',
+        sectionBilling: 'Rozliczenie',
+        rateLabel: 'Stawka',
+        totalLabel: 'Łącznie',
+        currency: 'PLN',
+        payButtonIdle: 'Przejdź do płatności',
+        payButtonBusy: 'Przekierowywanie...',
+        paymentError: 'Nie udało się rozpocząć płatności. Spróbuj ponownie.',
+        statusLabels: {
+            PENDING_PAYMENT: 'Oczekuje na płatność',
+            CONFIRMED: 'Potwierdzona',
+            CANCELLED: 'Anulowana',
+            COMPLETED: 'Zrealizowana'
+        } as Record<string, string>
     },
 
     admin: {

@@ -80,4 +80,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handlePasswordMismatch(PasswordMismatchException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorCode", ex.getMessage()));
     }
+
+    @ExceptionHandler(PayUOrderCreationException.class)
+    public ResponseEntity<Map<String, String>> handlePayUOrderCreation(PayUOrderCreationException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(Map.of("errorCode", ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidPayUSignatureException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidPayUSignature(InvalidPayUSignatureException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("errorCode", ex.getMessage()));
+    }
+
+    @ExceptionHandler(ReservationAlreadyProcessedException.class)
+    public ResponseEntity<Map<String, String>> handleReservationAlreadyProcessed(ReservationAlreadyProcessedException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("errorCode", ex.getMessage()));
+    }
 }

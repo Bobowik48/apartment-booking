@@ -40,7 +40,7 @@ public class SecurityConfig {
                         .requestMatchers(Constants.RESERVATIONS_PATH + Constants.MY_RESERVATIONS_PATH).authenticated()
                         .requestMatchers(Constants.AVAILABILITY_PATH, Constants.RESERVATIONS_PATH,
                                 Constants.RESERVATIONS_PATH + "/**", Constants.AUTH_PATH + "/**",
-                                Constants.APARTMENTS_PATH + "/**", "/error").permitAll()
+                                Constants.APARTMENTS_PATH + "/**", Constants.PAYMENTS_PATH + "/**", "/error").permitAll()
                         .requestMatchers(Constants.ADMIN_PATH + "/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

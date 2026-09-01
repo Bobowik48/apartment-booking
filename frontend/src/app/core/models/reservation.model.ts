@@ -19,4 +19,11 @@ export interface ReservationResponse {
     totalPrice: number;
     status: ReservationStatus;
     accessToken: string;
+    guestName: string;
+    guestEmail: string;
+    guestPhone: string;
+    apartmentName: string;
+    apartmentStreet: string;
+    apartmentNumber: string | null;
+    apartmentCity: string;
 }

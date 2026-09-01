@@ -12,6 +12,13 @@ public record ReservationResponse(
         Integer guestsCount,
         BigDecimal totalPrice,
         ReservationStatus status,
-        String accessToken
+        String accessToken,
+        String guestName,
+        String guestEmail,
+        String guestPhone,
+        String apartmentName,
+        String apartmentStreet,
+        String apartmentNumber,
+        String apartmentCity
 ) {
 }

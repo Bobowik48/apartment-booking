@@ -18,6 +18,8 @@ public final class Constants {
     public static final String RESET_PASSWORD_ENDPOINT = "/reset-password";
     public static final String USERS_PATH = "/api/users";
     public static final String ME_ENDPOINT = "/me";
+    public static final String PAYMENTS_PATH = "/api/payments";
+    public static final String NOTIFY_ENDPOINT = "/notify";
 
     // Error codes
     public static final String APARTMENT_NOT_FOUND = "APARTMENT_NOT_FOUND";
@@ -38,4 +40,8 @@ public final class Constants {
     public static final String INVALID_RESET_TOKEN = "INVALID_RESET_TOKEN";
     public static final String RESET_TOKEN_EXPIRED = "RESET_TOKEN_EXPIRED";
     public static final String PASSWORDS_DO_NOT_MATCH = "PASSWORDS_DO_NOT_MATCH";
+    public static final String PAYU_ORDER_CREATION_FAILED = "PAYU_ORDER_CREATION_FAILED";
+    public static final String INVALID_PAYU_SIGNATURE = "INVALID_PAYU_SIGNATURE";
+    public static final String PAYMENT_NOT_FOUND = "PAYMENT_NOT_FOUND";
+    public static final String RESERVATION_ALREADY_PROCESSED = "RESERVATION_ALREADY_PROCESSED";
 }

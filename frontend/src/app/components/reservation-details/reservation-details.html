@@ -1,20 +1,78 @@
 @if (isLoading()) {
-<p>{{ text.loading }}</p>
+<p class="reservation-loading">{{ text.loading }}</p>
 } @else if (notFound()) {
-<p>{{ text.notFound }}</p>
+<p class="reservation-loading">{{ text.notFound }}</p>
 } @else if (reservation(); as res) {
-<div>
-    <h2>{{ text.titlePrefix }}{{ res.id }}</h2>
-    <p>{{ text.status }}{{ res.status }}</p>
-    <p>{{ text.checkIn }}{{ res.checkInDate | date }}</p>
-    <p>{{ text.checkOut }}{{ res.checkOutDate | date }}</p>
-    <p>{{ text.guestsLabel }}{{ res.guestsCount ?? text.guestsNotProvided }}</p>
-    <p>{{ text.totalLabel }}{{ res.totalPrice }} {{ text.currency }}</p>
+<div class="reservation-details">
+    <div class="reservation-details__header">
+        <div>
+            <p class="reservation-details__eyebrow">{{ text.reservationLabel }}</p>
+            <h1 class="reservation-details__id">#{{ res.id }}</h1>
+        </div>
+        <span class="status-pill" [class]="'status-pill--' + res.status.toLowerCase()">
+            {{ text.statusLabels[res.status] }}
+        </span>
+    </div>
 
-    <p>
-        {{ text.linkIntro }}
-        <br />
-        <a [href]="accessLink">{{ accessLink }}</a>
+    <p class="reservation-details__apartment">
+        {{ res.apartmentName }} · {{ text.streetPrefix }}{{ res.apartmentStreet }}@if (res.apartmentNumber) {, {{
+        text.apartmentNumberPrefix }}{{ res.apartmentNumber }}}, {{ res.apartmentCity }}
     </p>
+
+    <section class="detail-card">
+        <p class="side-eyebrow">{{ text.sectionStay }}</p>
+        <div class="detail-row">
+            <span>{{ text.checkIn }}</span>
+            <span>{{ res.checkInDate | date: 'EEEE, d MMMM y' }}</span>
+        </div>
+        <div class="detail-row">
+            <span>{{ text.checkOut }}</span>
+            <span>{{ res.checkOutDate | date: 'EEEE, d MMMM y' }}</span>
+        </div>
+        <div class="detail-row">
+            <span>{{ text.nightsLabel }}</span>
+            <span>{{ nights() }} {{ nightsWord() }}</span>
+        </div>
+        <div class="detail-row">
+            <span>{{ text.guestsLabel }}</span>
+            <span>{{ res.guestsCount }}</span>
+        </div>
+    </section>
+
+    <section class="detail-card">
+        <p class="side-eyebrow">{{ text.sectionGuest }}</p>
+        <div class="detail-row">
+            <span>{{ text.nameLabel }}</span>
+            <span>{{ res.guestName }}</span>
+        </div>
+        <div class="detail-row">
+            <span>{{ text.emailLabel }}</span>
+            <span>{{ res.guestEmail }}</span>
+        </div>
+        <div class="detail-row">
+            <span>{{ text.phoneLabel }}</span>
+            <span>{{ res.guestPhone }}</span>
+        </div>
+    </section>
+
+    <section class="detail-card">
+        <p class="side-eyebrow">{{ text.sectionBilling }}</p>
+        <div class="detail-row">
+            <span>{{ text.rateLabel }}</span>
+            <span>{{ pricePerNight() }} {{ text.currency }} × {{ nights() }} {{ nightsWord() }}</span>
+        </div>
+        <div class="detail-row detail-row--total">
+            <span>{{ text.totalLabel }}</span>
+            <span class="detail-row__total-value">{{ res.totalPrice }} {{ text.currency }}</span>
+        </div>
+    </section>
+    @if (res.status === 'PENDING_PAYMENT') {
+    <button class="btn reservation-details__pay-btn" [disabled]="isInitiatingPayment()" (click)="payNow()">
+        {{ isInitiatingPayment() ? text.payButtonBusy : text.payButtonIdle }}
+    </button>
+    @if (paymentError(); as error) {
+    <p class="reservation-details__pay-error">{{ error }}</p>
+    }
+    }
 </div>
 }

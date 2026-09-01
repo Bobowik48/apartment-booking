@@ -21,4 +21,12 @@ public final class EmailTexts {
                     + "Kliknij przycisk poniżej, aby zobaczyć pełne szczegóły rezerwacji.";
     public static final String RESERVATION_CONFIRMATION_FOOTER =
             "Jeśli nie dokonywałeś tej rezerwacji, skontaktuj się z nami odpowiadając na tę wiadomość.";
+    public static final String RESERVATION_RECEIVED_SUBJECT = "Twoja rezerwacja czeka na płatność - Residenza Aurea";
+    public static final String RESERVATION_RECEIVED_BUTTON_TEXT = "Zobacz status rezerwacji";
+    public static final String RESERVATION_RECEIVED_GREETING = "Cześć %s,";
+    public static final String RESERVATION_RECEIVED_INTRO =
+            "Otrzymaliśmy Twoją prośbę o rezerwację. Termin: %s – %s, liczba gości: %d, łączna kwota: %s zł. "
+                    + "Dokończ płatność w ciągu %d minut, aby potwierdzić rezerwację — po tym czasie termin zostanie zwolniony.";
+    public static final String RESERVATION_RECEIVED_FOOTER =
+            "Jeśli nie dokonywałeś tej rezerwacji, zignoruj tę wiadomość — rezerwacja wygaśnie automatycznie.";
 }
