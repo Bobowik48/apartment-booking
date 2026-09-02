@@ -5,6 +5,7 @@ import com.hubert.apartmentbooking.constants.Constants;
 import com.hubert.apartmentbooking.dto.response.PaymentInitResponse;
 import com.hubert.apartmentbooking.exception.InvalidPayUSignatureException;
 import com.hubert.apartmentbooking.exception.ReservationAlreadyProcessedException;
+import com.hubert.apartmentbooking.model.Apartment;
 import com.hubert.apartmentbooking.model.Payment;
 import com.hubert.apartmentbooking.model.Reservation;
 import com.hubert.apartmentbooking.model.enums.PaymentStatus;
@@ -125,21 +126,41 @@ public class PaymentService {
 
     private String buildReservationConfirmationEmail(Reservation reservation) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d.MM.yyyy");
+        Apartment apartment = reservation.getApartment();
+
         String greeting = EmailTexts.RESERVATION_CONFIRMATION_GREETING.formatted(reservation.getGuestName());
         String intro = EmailTexts.RESERVATION_CONFIRMATION_INTRO.formatted(
                 reservation.getCheckInDate().format(dateFormatter),
                 reservation.getCheckOutDate().format(dateFormatter),
                 reservation.getGuestsCount(),
                 reservation.getTotalPrice());
-        String bodyHtml = "<p>%s</p><p>%s</p>".formatted(greeting, intro);
+
+        StringBuilder bodyHtml = new StringBuilder();
+        bodyHtml.append("<p>").append(greeting).append("</p>");
+        bodyHtml.append("<p>").append(intro).append("</p>");
+
+        if (hasAccessCodes(apartment)) {
+            String accessDetails = EmailTexts.RESERVATION_CONFIRMATION_ACCESS_DETAILS.formatted(
+                    apartment.getBuildingEntranceCode(),
+                    apartment.getKeyBoxCode(),
+                    apartment.getApartmentNumber());
+            bodyHtml.append("<p>").append(EmailTexts.RESERVATION_CONFIRMATION_ACCESS_INTRO).append("</p>");
+            bodyHtml.append("<p>").append(accessDetails).append("</p>");
+        }
+
         String detailsUrl = "%s/reservation-details?token=%s".formatted(frontendUrl, reservation.getAccessToken());
 
         return EmailTemplates.button(
                 EmailTexts.RESERVATION_CONFIRMATION_SUBJECT,
-                bodyHtml,
+                bodyHtml.toString(),
                 EmailTexts.RESERVATION_CONFIRMATION_BUTTON_TEXT,
                 detailsUrl,
                 EmailTexts.RESERVATION_CONFIRMATION_FOOTER);
+    }
+
+    private boolean hasAccessCodes(Apartment apartment) {
+        return apartment.getBuildingEntranceCode() != null && !apartment.getBuildingEntranceCode().isBlank()
+                && apartment.getKeyBoxCode() != null && !apartment.getKeyBoxCode().isBlank();
     }
 
     private record PayUNotification(Order order) {

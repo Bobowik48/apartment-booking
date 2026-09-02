@@ -3,6 +3,7 @@ package com.hubert.apartmentbooking.controller;
 import com.hubert.apartmentbooking.constants.Constants;
 import com.hubert.apartmentbooking.dto.request.UpdateApartmentRequest;
 import com.hubert.apartmentbooking.dto.request.UpdatePhotoRequest;
+import com.hubert.apartmentbooking.dto.response.ApartmentResponse;
 import com.hubert.apartmentbooking.exception.ApartmentNotFoundException;
 import com.hubert.apartmentbooking.model.Apartment;
 import com.hubert.apartmentbooking.model.ApartmentPhoto;
@@ -34,9 +35,10 @@ public class ApartmentController {
     }
 
     @GetMapping("/{id}")
-    public Apartment getApartment(@PathVariable Long id) {
-        return apartmentRepository.findById(id)
+    public ApartmentResponse getApartment(@PathVariable Long id) {
+        Apartment apartment = apartmentRepository.findById(id)
                 .orElseThrow(() -> new ApartmentNotFoundException(Constants.APARTMENT_NOT_FOUND));
+        return ApartmentResponse.from(apartment);
     }
 
     @PutMapping("/{id}")
@@ -54,6 +56,8 @@ public class ApartmentController {
         apartment.setMaxGuests(request.maxGuests());
         apartment.setArea(request.area());
         apartment.setFloor(request.floor());
+        apartment.setBuildingEntranceCode(request.buildingEntranceCode());
+        apartment.setKeyBoxCode(request.keyBoxCode());
 
         return apartmentRepository.save(apartment);
     }

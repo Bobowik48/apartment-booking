@@ -35,4 +35,8 @@ public class Apartment {
     private BigDecimal area;
 
     private Integer floor;
+
+    private String buildingEntranceCode;
+
+    private String keyBoxCode;
 }

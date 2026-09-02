@@ -10,6 +10,8 @@ export interface Apartment {
     maxGuests: number;
     area: number;
     floor: number;
+    buildingEntranceCode: string | null;
+    keyBoxCode: string | null;
 }
 
 export interface ApartmentPhoto {
@@ -30,6 +32,8 @@ export interface UpdateApartmentRequest {
     maxGuests: number;
     area: number;
     floor: number;
+    buildingEntranceCode: string | null;
+    keyBoxCode: string | null;
 }
 
 export interface UpdatePhotoRequest {

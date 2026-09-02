@@ -16,6 +16,8 @@ public record UpdateApartmentRequest(
         @NotNull @Positive BigDecimal pricePerNight,
         @NotNull @Positive Integer maxGuests,
         @NotNull @Positive BigDecimal area,
-        @NotNull @Positive Integer floor
+        @NotNull @Positive Integer floor,
+        String buildingEntranceCode,
+        String keyBoxCode
 ) {
 }

@@ -4,6 +4,7 @@ export const API_BASE_URL = 'http://localhost:8080';
 
 export const API_ENDPOINTS = {
     apartments: `${API_BASE_URL}/api/apartments`,
+    adminApartments: `${API_BASE_URL}/api/admin/apartments`,
     availability: `${API_BASE_URL}/api/availability`,
     reservations: `${API_BASE_URL}/api/reservations`,
     payments: `${API_BASE_URL}/api/payments`,
@@ -204,6 +205,10 @@ export const UI_TEXT = {
         uploading: 'Wysyłanie...',
         deletePhoto: 'Usuń',
         photoCountSuffix: ' zdjęć w galerii',
+        accessSection: 'Kody dostępu',
+        buildingEntranceCodeLabel: 'Kod do klatki',
+        keyBoxCodeLabel: 'Kod do skrytki z kluczami',
+        accessHint: 'Kody zostaną automatycznie wysłane gościowi mailem po potwierdzeniu płatności.',
     },
 
     myReservations: {

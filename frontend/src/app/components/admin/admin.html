@@ -76,6 +76,22 @@
                 </label>
             </div>
 
+            <h3 class="admin__subheading">{{ text.accessSection }}</h3>
+
+            <div class="field-row">
+                <label class="field">
+                    <span class="field__label">{{ text.buildingEntranceCodeLabel }}</span>
+                    <input type="text" [value]="buildingEntranceCode()"
+                        (input)="updateBuildingEntranceCode($any($event.target).value)" />
+                </label>
+
+                <label class="field">
+                    <span class="field__label">{{ text.keyBoxCodeLabel }}</span>
+                    <input type="text" [value]="keyBoxCode()" (input)="updateKeyBoxCode($any($event.target).value)" />
+                </label>
+            </div>
+            <p class="admin__hint">{{ text.accessHint }}</p>
+
             <button class="btn admin__save" [disabled]="isSaving()" (click)="saveApartment()">
                 {{ isSaving() ? text.saveBusy : text.saveIdle }}
             </button>

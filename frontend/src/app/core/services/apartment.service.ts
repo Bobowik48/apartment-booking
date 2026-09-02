@@ -34,4 +34,8 @@ export class ApartmentService {
     getApartment(id: number): Observable<Apartment> {
         return this.http.get<Apartment>(`${API_ENDPOINTS.apartments}/${id}`);
     }
+
+    getApartmentForAdmin(id: number): Observable<Apartment> {
+        return this.http.get<Apartment>(`${API_ENDPOINTS.adminApartments}/${id}`);
+    }
 }

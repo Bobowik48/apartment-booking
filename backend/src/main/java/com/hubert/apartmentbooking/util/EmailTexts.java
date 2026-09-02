@@ -29,4 +29,10 @@ public final class EmailTexts {
                     + "Dokończ płatność w ciągu %d minut, aby potwierdzić rezerwację — po tym czasie termin zostanie zwolniony.";
     public static final String RESERVATION_RECEIVED_FOOTER =
             "Jeśli nie dokonywałeś tej rezerwacji, zignoruj tę wiadomość — rezerwacja wygaśnie automatycznie.";
+    public static final String RESERVATION_CONFIRMATION_ACCESS_INTRO =
+            "Poniżej znajdziesz informacje, jak dostać się do mieszkania:";
+    public static final String RESERVATION_CONFIRMATION_ACCESS_DETAILS =
+            "Gdy podjedziesz pod wskazany adres, otwórz klatkę kodem %s, a następnie podejdź do drzwi mieszkania "
+                    + "i otwórz skrytkę z kluczami kodem %s. Po zakończonej rezerwacji prosimy o wrzucenie kluczy "
+                    + "do skrzynki na listy z numerem %s (numer mieszkania).";
 }
