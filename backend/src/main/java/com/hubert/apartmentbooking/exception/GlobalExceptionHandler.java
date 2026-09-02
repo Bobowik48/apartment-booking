@@ -95,4 +95,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleReservationAlreadyProcessed(ReservationAlreadyProcessedException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("errorCode", ex.getMessage()));
     }
+
+    @ExceptionHandler(CurrentPasswordIncorrectException.class)
+    public ResponseEntity<Map<String, String>> handleCurrentPasswordIncorrect(CurrentPasswordIncorrectException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("errorCode", ex.getMessage()));
+    }
 }

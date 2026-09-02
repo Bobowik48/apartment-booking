@@ -44,4 +44,5 @@ public final class Constants {
     public static final String INVALID_PAYU_SIGNATURE = "INVALID_PAYU_SIGNATURE";
     public static final String PAYMENT_NOT_FOUND = "PAYMENT_NOT_FOUND";
     public static final String RESERVATION_ALREADY_PROCESSED = "RESERVATION_ALREADY_PROCESSED";
+    public static final String CURRENT_PASSWORD_INCORRECT = "CURRENT_PASSWORD_INCORRECT";
 }
