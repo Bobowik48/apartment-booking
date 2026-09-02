@@ -41,5 +41,15 @@ export const routes: Routes = [
         loadComponent: () => import('./components/admin/admin').then(m => m.Admin),
         canActivate: [adminGuard]
     },
+    {
+        path: 'account',
+        loadComponent: () => import('./components/account/account').then(m => m.Account),
+        canActivate: [authGuard]
+    },
+    {
+        path: 'change-password',
+        loadComponent: () => import('./components/change-password/change-password').then(m => m.ChangePassword),
+        canActivate: [authGuard]
+    },
     { path: '**', redirectTo: '' }
 ];

@@ -1,0 +1,32 @@
+<div class="account">
+    <p class="account__eyebrow">{{ text.eyebrow }}</p>
+    <h1 class="account__title">{{ text.title }}</h1>
+
+    <section class="account__card">
+        @if (errorMessage(); as error) {
+        <p class="account__error">{{ error }}</p>
+        }
+        @if (successMessage(); as success) {
+        <p class="account__success">{{ success }}</p>
+        }
+
+        <label class="field">
+            <span class="field__label">{{ text.fullNameLabel }}</span>
+            <input type="text" [value]="fullName()" (input)="updateFullName($any($event.target).value)" />
+        </label>
+
+        <label class="field">
+            <span class="field__label">{{ text.emailLabel }}</span>
+            <input type="email" [value]="email()" disabled />
+        </label>
+
+        <label class="field">
+            <span class="field__label">{{ text.phoneLabel }}</span>
+            <input type="text" [value]="phone()" (input)="updatePhone($any($event.target).value)" />
+        </label>
+
+        <button class="btn" [disabled]="!hasChanges() || isSaving()" (click)="save()">
+            {{ isSaving() ? text.saveBusy : text.saveIdle }}
+        </button>
+    </section>
+</div>

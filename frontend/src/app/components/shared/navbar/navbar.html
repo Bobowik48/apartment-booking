@@ -15,7 +15,25 @@
         <a routerLink="/admin" class="navbar__link" (click)="closeMenu()">{{ text.adminPanel }}</a>
         }
         <span class="navbar__divider"></span>
-        <span class="navbar__email">{{ user.email }}</span>
+
+        <div class="navbar__account">
+            <button type="button" class="navbar__account-trigger" (click)="toggleAccountMenu()"
+                [attr.aria-expanded]="isAccountMenuOpen()">
+                <span class="navbar__email">{{ user.email }}</span>
+                <img class="navbar__chevron" [class.navbar__chevron--open]="isAccountMenuOpen()"
+                    src="assets/icons/keyboard_arrow_down.svg" alt="" width="16" height="16" />
+            </button>
+
+            @if (isAccountMenuOpen()) {
+            <div class="navbar__account-menu">
+                <a routerLink="/account" class="navbar__account-menu-link" (click)="closeMenu()">{{
+                    text.changeDetails }}</a>
+                <a routerLink="/change-password" class="navbar__account-menu-link" (click)="closeMenu()">{{
+                    text.changePassword }}</a>
+            </div>
+            }
+        </div>
+
         <button class="btn-ghost navbar__logout" (click)="logout()">{{ text.logout }}</button>
         } @else {
         <a routerLink="/login" class="navbar__link" (click)="closeMenu()">{{ text.login }}</a>

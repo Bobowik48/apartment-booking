@@ -20,6 +20,7 @@ const ERROR_TRANSLATIONS_PL: Record<string, string> = {
   INVALID_RESET_TOKEN: 'Link do resetu hasła jest nieprawidłowy. Poproś o nowy.',
   RESET_TOKEN_EXPIRED: 'Link do resetu hasła wygasł. Poproś o nowy.',
   PASSWORDS_DO_NOT_MATCH: 'Hasła nie są identyczne.',
+  CURRENT_PASSWORD_INCORRECT: 'Aktualne hasło jest nieprawidłowe.',
 };
 
 const FALLBACK_MESSAGE_PL = 'Wystąpił nieoczekiwany błąd. Spróbuj ponownie.';

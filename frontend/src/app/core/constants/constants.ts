@@ -16,6 +16,8 @@ export const API_ENDPOINTS = {
     },
     users: {
         me: `${API_BASE_URL}/api/users/me`,
+        updateProfile: `${API_BASE_URL}/api/users/me/profile`,
+        changePassword: `${API_BASE_URL}/api/users/me/password`,
     },
 } as const;
 
@@ -46,6 +48,8 @@ export const UI_TEXT = {
         login: 'Zaloguj się',
         register: 'Zarejestruj się',
         logout: 'Wyloguj',
+        changeDetails: 'Zmień dane',
+        changePassword: 'Zmień hasło',
     },
 
     home: {
@@ -152,6 +156,17 @@ export const UI_TEXT = {
             footerText: 'Pamiętasz hasło? ',
             footerLink: 'Zaloguj się',
         },
+        changePassword: {
+            eyebrow: 'Twoje konto',
+            title: 'Zmiana hasła',
+            subtitle: 'Podaj aktualne hasło oraz nowe hasło, aby je zmienić.',
+            currentPasswordLabel: 'Aktualne hasło',
+            newPasswordLabel: 'Nowe hasło',
+            confirmPasswordLabel: 'Powtórz nowe hasło',
+            passwordMismatch: 'Hasła nie są identyczne.',
+            submitIdle: 'Zmień hasło',
+            submitBusy: 'Zapisywanie...',
+        },
     },
 
     reservationDetails: {
@@ -225,5 +240,16 @@ export const UI_TEXT = {
         currency: 'PLN',
         detailsLink: 'Szczegóły →',
         newReservation: '+ Nowa rezerwacja',
+    },
+
+    account: {
+        eyebrow: 'Twoje konto',
+        title: 'Dane konta',
+        fullNameLabel: 'Imię i nazwisko',
+        emailLabel: 'Adres e-mail',
+        phoneLabel: 'Numer telefonu',
+        saveIdle: 'Zapisz zmiany',
+        saveBusy: 'Zapisywanie...',
+        saved: 'Dane zostały zaktualizowane.',
     },
 } as const;

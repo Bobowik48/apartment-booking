@@ -35,3 +35,14 @@ export interface UserProfileResponse {
     email: string;
     phone: string;
 }
+
+export interface UpdateProfileRequest {
+    fullName: string;
+    phone: string;
+}
+
+export interface ChangePasswordRequest {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+}
