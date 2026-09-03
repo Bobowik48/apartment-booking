@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ActivatedRoute, provideRouter } from '@angular/router';
+import { convertToParamMap } from '@angular/router';
 
 import { ReservationDetails } from './reservation-details';
 
@@ -8,7 +12,18 @@ describe('ReservationDetails', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReservationDetails]
+      imports: [ReservationDetails],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: { queryParamMap: convertToParamMap({ token: 'token-123' }) }
+          }
+        }
+      ]
     })
     .compileComponents();
 

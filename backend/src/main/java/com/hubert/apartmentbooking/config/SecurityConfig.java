@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, Constants.APARTMENTS_PATH + "/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, Constants.APARTMENTS_PATH + "/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, Constants.APARTMENTS_PATH + "/**").hasRole("ADMIN")

@@ -10,6 +10,7 @@ import com.hubert.apartmentbooking.model.ApartmentPhoto;
 import com.hubert.apartmentbooking.repository.ApartmentPhotoRepository;
 import com.hubert.apartmentbooking.repository.ApartmentRepository;
 import com.hubert.apartmentbooking.service.FileStorageService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +21,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping(Constants.APARTMENTS_PATH)
+@Tag(name = "Apartments", description = "Apartment details, photo gallery and admin edits")
 public class ApartmentController {
 
     private final ApartmentRepository apartmentRepository;

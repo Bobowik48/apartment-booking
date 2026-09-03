@@ -8,6 +8,7 @@ import com.hubert.apartmentbooking.exception.CurrentPasswordIncorrectException;
 import com.hubert.apartmentbooking.exception.PasswordMismatchException;
 import com.hubert.apartmentbooking.model.User;
 import com.hubert.apartmentbooking.repository.UserRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping(Constants.USERS_PATH)
+@Tag(name = "Users", description = "The logged-in user's own profile and password")
 public class UserController {
 
     private final UserRepository userRepository;

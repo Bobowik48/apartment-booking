@@ -7,6 +7,7 @@ import com.hubert.apartmentbooking.dto.request.RegisterRequest;
 import com.hubert.apartmentbooking.dto.request.ResetPasswordRequest;
 import com.hubert.apartmentbooking.dto.response.AuthResponse;
 import com.hubert.apartmentbooking.service.AuthService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(Constants.AUTH_PATH)
+@Tag(name = "Auth", description = "Registration, login and password reset")
 public class AuthController {
 
     private final AuthService authService;
