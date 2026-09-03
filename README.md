@@ -20,6 +20,10 @@ Full-stack apartment booking application built with Angular and Spring Boot, con
 **Database:** PostgreSQL
 **Infrastructure:** Docker, Docker Compose
 
+## Architecture
+
+See [docs/architecture.md](docs/architecture.md) for the full picture — request flow, frontend/backend design choices, and how the PayU + ngrok + email flows fit together.
+
 ## Database schema
 
 See [docs/database.md](docs/database.md).
