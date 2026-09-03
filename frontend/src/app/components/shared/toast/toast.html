@@ -1,0 +1,7 @@
+@if (notification(); as n) {
+<div class="toast" [class.toast--success]="n.type === 'success'" [class.toast--error]="n.type === 'error'"
+    role="status">
+    <span class="toast__message">{{ n.message }}</span>
+    <button type="button" class="toast__close" (click)="dismiss()" aria-label="Zamknij">&times;</button>
+</div>
+}

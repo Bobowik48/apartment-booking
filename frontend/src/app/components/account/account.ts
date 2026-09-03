@@ -1,6 +1,7 @@
 import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { ErrorTranslationService } from '../../core/services/error-translation.service';
+import { NotificationService } from '../../core/services/notification.service';
 import { UI_TEXT } from '../../core/constants/constants';
 
 @Component({
@@ -16,6 +17,7 @@ export class Account implements OnInit {
 
   private authService = inject(AuthService);
   private errorTranslationService = inject(ErrorTranslationService);
+  private notificationService = inject(NotificationService);
 
   readonly fullName = signal('');
   readonly email = signal('');
@@ -25,7 +27,6 @@ export class Account implements OnInit {
 
   readonly isSaving = signal(false);
   readonly errorMessage = signal<string | null>(null);
-  readonly successMessage = signal<string | null>(null);
 
   readonly hasChanges = computed(() => {
     const nameChanged = this.fullName().trim().length > 0 && this.fullName().trim() !== this.originalFullName().trim();
@@ -56,7 +57,6 @@ export class Account implements OnInit {
 
     this.isSaving.set(true);
     this.errorMessage.set(null);
-    this.successMessage.set(null);
 
     this.authService.updateProfile({
       fullName: this.fullName(),
@@ -68,7 +68,7 @@ export class Account implements OnInit {
         this.phone.set(profile.phone);
         this.originalFullName.set(profile.fullName);
         this.originalPhone.set(profile.phone);
-        this.successMessage.set(this.text.saved);
+        this.notificationService.success(this.text.saved);
       },
       error: (err) => {
         this.isSaving.set(false);

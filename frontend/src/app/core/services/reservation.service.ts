@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateReservationRequest, ReservationResponse } from '../models/reservation.model';
 import { API_ENDPOINTS } from '../constants/constants';
-import { skipLoadingContext } from './loading.service';
 
 @Injectable({ providedIn: 'root' })
 export class ReservationService {
@@ -13,10 +12,8 @@ export class ReservationService {
         return this.http.post<ReservationResponse>(API_ENDPOINTS.reservations, request);
     }
 
-    getByAccessToken(accessToken: string, silent = false): Observable<ReservationResponse> {
-        return this.http.get<ReservationResponse>(`${API_ENDPOINTS.reservations}/${accessToken}`, {
-            context: silent ? skipLoadingContext() : undefined
-        });
+    getByAccessToken(accessToken: string): Observable<ReservationResponse> {
+        return this.http.get<ReservationResponse>(`${API_ENDPOINTS.reservations}/${accessToken}`);
     }
 
     getMyReservations(): Observable<ReservationResponse[]> {

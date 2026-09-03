@@ -197,6 +197,8 @@ export const UI_TEXT = {
         payButtonIdle: 'Przejdź do płatności',
         payButtonBusy: 'Przekierowywanie...',
         paymentError: 'Nie udało się rozpocząć płatności. Spróbuj ponownie.',
+        accessInfoTitle: 'Instrukcje dostępu wysłane',
+        accessInfoMessage: 'Na Twój adres e-mail wysłaliśmy wiadomość z kodem do klatki oraz kodem do skrytki z kluczami. Sprawdź skrzynkę odbiorczą (również folder spam).',
         statusLabels: {
             PENDING_PAYMENT: 'Oczekuje na płatność',
             CONFIRMED: 'Potwierdzona',

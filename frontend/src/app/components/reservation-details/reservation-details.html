@@ -19,6 +19,13 @@
         text.apartmentNumberPrefix }}{{ res.apartmentNumber }}}, {{ res.apartmentCity }}
     </p>
 
+    @if (res.status === 'CONFIRMED') {
+    <section class="detail-card detail-card--access-info">
+        <p class="side-eyebrow">{{ text.accessInfoTitle }}</p>
+        <p class="access-info__message">{{ text.accessInfoMessage }}</p>
+    </section>
+    }
+
     <section class="detail-card">
         <p class="side-eyebrow">{{ text.sectionStay }}</p>
         <div class="detail-row">

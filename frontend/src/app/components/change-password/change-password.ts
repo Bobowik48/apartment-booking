@@ -2,6 +2,7 @@ import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@a
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { ErrorTranslationService } from '../../core/services/error-translation.service';
+import { NotificationService } from '../../core/services/notification.service';
 import { UI_TEXT } from '../../core/constants/constants';
 
 @Component({
@@ -17,6 +18,7 @@ export class ChangePassword {
   private router = inject(Router);
   private authService = inject(AuthService);
   private errorTranslationService = inject(ErrorTranslationService);
+  private notificationService = inject(NotificationService);
 
   readonly currentPassword = signal('');
   readonly newPassword = signal('');
@@ -59,6 +61,7 @@ export class ChangePassword {
       confirmPassword: this.confirmPassword()
     }).subscribe({
       next: () => {
+        this.notificationService.success('Hasło zostało zmienione. Zaloguj się ponownie.');
         this.authService.logout();
         this.router.navigate(['/login']);
       },

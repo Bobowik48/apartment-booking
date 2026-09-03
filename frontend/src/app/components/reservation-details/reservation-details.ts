@@ -5,6 +5,7 @@ import { ReservationService } from '../../core/services/reservation.service';
 import { ReservationResponse } from '../../core/models/reservation.model';
 import { UI_TEXT } from '../../core/constants/constants';
 import { PaymentService } from '../../core/services/payment.service';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-reservation-details',
@@ -15,19 +16,16 @@ import { PaymentService } from '../../core/services/payment.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReservationDetails implements OnInit, OnDestroy {
-  // ### Constants ###
   readonly text = UI_TEXT.reservationDetails;
   private readonly pollIntervalMs = 3000;
   private readonly maxPollAttempts = 20;
 
-  // ### Dependencies ###
   private route = inject(ActivatedRoute);
 
-  // ### Services ###
   private reservationService = inject(ReservationService);
   private paymentService = inject(PaymentService);
+  private notificationService = inject(NotificationService);
 
-  // ### Fields ###
   readonly reservation = signal<ReservationResponse | null>(null);
   readonly isLoading = signal(true);
   readonly notFound = signal(false);
@@ -126,14 +124,18 @@ export class ReservationDetails implements OnInit, OnDestroy {
 
     this.reservationService.getByAccessToken(this.accessToken).subscribe({
       next: reservation => {
+        const previousStatus = this.reservation()?.status;
         this.reservation.set(reservation);
+
+        if (previousStatus === 'PENDING_PAYMENT' && reservation.status === 'CONFIRMED') {
+          this.notificationService.success('Płatność zaakceptowana! Rezerwacja potwierdzona, instrukcje dojazdu wysłaliśmy mailem.');
+        }
 
         if (reservation.status === 'PENDING_PAYMENT') {
           this.schedulePoll();
         }
       },
       error: () => {
-        // cichy fail — zostajemy przy ostatnim znanym stanie, użytkownik zawsze może odświeżyć ręcznie
       }
     });
   }

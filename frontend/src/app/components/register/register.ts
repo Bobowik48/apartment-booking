@@ -2,6 +2,7 @@ import { Component, inject, signal, computed, AfterViewInit, OnDestroy, NgZone, 
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { ErrorTranslationService } from '../../core/services/error-translation.service';
+import { NotificationService } from '../../core/services/notification.service';
 import { UI_TEXT, TURNSTILE_SITE_KEY } from '../../core/constants/constants';
 
 declare const turnstile: any;
@@ -15,19 +16,16 @@ declare const turnstile: any;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Register implements AfterViewInit, OnDestroy {
-  // ### Constants ###
   readonly text = UI_TEXT.auth.register;
   readonly turnstileSiteKey = TURNSTILE_SITE_KEY;
 
-  // ### Dependencies ###
   private router = inject(Router);
   private zone = inject(NgZone);
 
-  // ### Services ###
   private authService = inject(AuthService);
   private errorTranslationService = inject(ErrorTranslationService);
+  private notificationService = inject(NotificationService);
 
-  // ### Fields ###
   readonly fullName = signal('');
   readonly email = signal('');
   readonly phone = signal('');
@@ -115,6 +113,7 @@ export class Register implements AfterViewInit, OnDestroy {
       captchaToken: this.captchaToken()!
     }).subscribe({
       next: () => {
+        this.notificationService.success('Konto zostało utworzone!');
         this.router.navigate(['/']);
       },
       error: (err) => {

@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from './components/shared/navbar/navbar';
 import { Footer } from './components/shared/footer/footer';
-import { Spinner } from './components/shared/spinner/spinner';
+import { Toast } from './components/shared/toast/toast';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Footer, Spinner],
+  imports: [RouterOutlet, Navbar, Footer, Toast],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

@@ -10,6 +10,7 @@ import { DEFAULT_APARTMENT_ID, UI_TEXT } from '../../core/constants/constants';
 import { ReservationService } from '../../core/services/reservation.service';
 import { ErrorTranslationService } from '../../core/services/error-translation.service';
 import { AuthService } from '../../core/services/auth.service';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-booking',
@@ -20,27 +21,23 @@ import { AuthService } from '../../core/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Booking implements OnInit {
-  // ### Constants ###
   readonly text = UI_TEXT.booking;
 
-  // ### Dependencies ###
   private availabilityService = inject(AvailabilityService);
   private router = inject(Router);
 
-  // ### Services ###
   private apartmentService = inject(ApartmentService);
   private reservationService = inject(ReservationService);
   private errorTranslationService = inject(ErrorTranslationService);
   private authService = inject(AuthService);
+  private notificationService = inject(NotificationService);
 
-  // ### Constants ###
   readonly today = new Date();
   readonly maxDate = this.calculateMaxDate();
   private readonly namePattern = /^[\p{L}\s'-]+$/u;
   private readonly emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   private readonly phonePattern = /^\+?[0-9]{9,15}$/;
 
-  // ### Fields ###
   readonly apartment = signal<Apartment | null>(null);
   readonly selectedCheckIn = signal<Date | null>(null);
   readonly selectedCheckOut = signal<Date | null>(null);
@@ -230,6 +227,7 @@ export class Booking implements OnInit {
       guestPhone: this.guestPhone()
     }).subscribe({
       next: response => {
+        this.notificationService.success('Rezerwacja została utworzona! Dokończ płatność, aby ją potwierdzić.');
         this.router.navigate(['/reservation-details'], {
           queryParams: { token: response.accessToken }
         });
