@@ -28,6 +28,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "8080:8080"
+    volumes:
+      - ./backend/uploads:/app/uploads
     networks:
       - apartment-booking-net
 
