@@ -24,6 +24,45 @@
 
     <p class="hero__address">{{ heroAddress() }}</p>
 </section>
+
+@if (photos().length > 0) {
+<section class="gallery">
+    <div class="gallery__header">
+        <div>
+            <p class="gallery__eyebrow">{{ text.gallery.eyebrow }}</p>
+            <h2 class="gallery__title">{{ text.gallery.title }}</h2>
+        </div>
+        <a routerLink="/booking" class="gallery__cta">{{ text.gallery.checkAvailability }}</a>
+    </div>
+
+    <div class="gallery__grid">
+        @if (heroPhoto(); as hero) {
+        <button type="button" class="gallery__tile gallery__tile--hero" (click)="openLightbox(0)">
+            <img [src]="photoUrl(hero)" [alt]="hero.altText ?? apt.name" />
+        </button>
+        }
+
+        <div class="gallery__small-grid">
+            @for (photo of smallSlots(); track photo.id; let i = $index) {
+            <button type="button" class="gallery__tile" (click)="openLightbox(i + 1)">
+                <img [src]="photoUrl(photo)" [alt]="photo.altText ?? apt.name" />
+            </button>
+            }
+
+            @if (overlayPhoto(); as overlay) {
+            <button type="button" class="gallery__tile gallery__tile--overlay" (click)="openLightbox(4)">
+                <img [src]="photoUrl(overlay)" [alt]="overlay.altText ?? apt.name" />
+                <span class="gallery__overlay-text">+{{ extraPhotosCount() }}</span>
+            </button>
+            }
+        </div>
+    </div>
+</section>
+}
 } @else {
 <p class="home__loading">{{ text.loadError }}</p>
+}
+
+@if (lightboxIndex() !== null) {
+<app-lightbox [imageUrls]="galleryPhotoUrls()" [startIndex]="lightboxIndex()!" (closed)="closeLightbox()" />
 }

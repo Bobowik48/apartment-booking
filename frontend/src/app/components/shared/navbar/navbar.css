@@ -108,7 +108,7 @@
     background: var(--color-surface-raised);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
     .navbar {
         padding: var(--space-sm) var(--space-md);
     }

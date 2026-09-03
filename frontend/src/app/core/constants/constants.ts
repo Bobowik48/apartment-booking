@@ -62,6 +62,12 @@ export const UI_TEXT = {
         areaSuffix: ' m²',
         floorSuffix: '. piętro',
         cta: 'Zarezerwuj teraz',
+
+        gallery: {
+            eyebrow: 'GALERIA',
+            title: 'Przestrzeń, która zapada w pamięć',
+            checkAvailability: 'SPRAWDŹ DOSTĘPNOŚĆ',
+        },
     },
 
     booking: {
